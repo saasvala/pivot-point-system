@@ -68,6 +68,14 @@ export default {
           orange: "hsl(var(--neon-orange))",
           pink: "hsl(var(--neon-pink))",
         },
+        pastel: {
+          pink: "hsl(var(--pastel-pink))",
+          purple: "hsl(var(--pastel-purple))",
+          blue: "hsl(var(--pastel-blue))",
+          cyan: "hsl(var(--pastel-cyan))",
+          mint: "hsl(var(--pastel-mint))",
+          peach: "hsl(var(--pastel-peach))",
+        },
         success: {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
