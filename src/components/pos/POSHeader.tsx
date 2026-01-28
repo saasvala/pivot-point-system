@@ -63,7 +63,7 @@ export const POSHeader = ({ businessName, branchName, cashierName, onMenuClick }
           </Button>
           
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-glow-primary">
               <span className="text-xl font-bold text-primary-foreground">N</span>
             </div>
             <div>

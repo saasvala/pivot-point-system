@@ -38,11 +38,11 @@ export const PaymentModal = ({
   const [isProcessing, setIsProcessing] = useState(false);
 
   const paymentMethods: { id: PaymentMethod; icon: typeof CreditCard; label: string; color: string }[] = [
-    { id: 'cash', icon: Banknote, label: 'Cash', color: 'text-neon-green' },
-    { id: 'card', icon: CreditCard, label: 'Card', color: 'text-neon-cyan' },
-    { id: 'upi', icon: Smartphone, label: 'UPI', color: 'text-neon-purple' },
-    { id: 'wallet', icon: Wallet, label: 'Wallet', color: 'text-neon-orange' },
-    { id: 'split', icon: Calculator, label: 'Split', color: 'text-neon-pink' },
+    { id: 'cash', icon: Banknote, label: 'Cash', color: 'text-success' },
+    { id: 'card', icon: CreditCard, label: 'Card', color: 'text-info' },
+    { id: 'upi', icon: Smartphone, label: 'UPI', color: 'text-secondary' },
+    { id: 'wallet', icon: Wallet, label: 'Wallet', color: 'text-warning' },
+    { id: 'split', icon: Calculator, label: 'Split', color: 'text-accent-pink' },
   ];
 
   const quickCashAmounts = [10, 20, 50, 100, 200, 500];
@@ -107,7 +107,7 @@ export const PaymentModal = ({
                     variant="outline"
                     className={cn(
                       "flex-col h-auto py-4 gap-2",
-                      selectedMethod === method.id && "border-primary bg-primary/10 neon-glow-cyan"
+                      selectedMethod === method.id && "border-primary bg-primary/10 shadow-glow-primary"
                     )}
                     onClick={() => setSelectedMethod(method.id)}
                   >

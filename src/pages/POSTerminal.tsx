@@ -131,7 +131,7 @@ const POSTerminal = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background gradient-mesh flex flex-col">
       {/* Header */}
       <POSHeader
         businessName="NexusPOS"
@@ -208,7 +208,7 @@ const POSTerminal = () => {
       <div className="lg:hidden fixed bottom-4 right-4 z-40">
         <motion.button
           whileTap={{ scale: 0.95 }}
-          className="w-16 h-16 rounded-full bg-gradient-to-r from-[hsl(187,100%,50%)] to-[hsl(270,91%,65%)] shadow-neon-cyan flex items-center justify-center relative"
+          className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary shadow-glow-primary flex items-center justify-center relative"
           onClick={() => toast.info('Mobile cart coming soon')}
         >
           <span className="text-2xl">🛒</span>
