@@ -27,12 +27,12 @@ export const QuickActions = ({
   const actions = [
     { icon: Pause, label: 'Hold', onClick: onHoldOrder, color: 'text-warning' },
     { icon: RotateCcw, label: 'Recall', onClick: onRecallOrder, color: 'text-info' },
-    { icon: Receipt, label: 'Receipts', onClick: onViewReceipts, color: 'text-neon-green' },
-    { icon: Users, label: 'Customers', onClick: onManageCustomers, color: 'text-neon-purple' },
+    { icon: Receipt, label: 'Receipts', onClick: onViewReceipts, color: 'text-success' },
+    { icon: Users, label: 'Customers', onClick: onManageCustomers, color: 'text-secondary' },
     { icon: Calculator, label: 'Calculator', onClick: () => {}, color: 'text-muted-foreground' },
-    { icon: CreditCard, label: 'Pay Out', onClick: () => {}, color: 'text-neon-orange' },
-    { icon: Gift, label: 'Gift Card', onClick: () => {}, color: 'text-neon-pink' },
-    { icon: FileText, label: 'Reports', onClick: () => {}, color: 'text-neon-cyan' },
+    { icon: CreditCard, label: 'Pay Out', onClick: () => {}, color: 'text-accent-orange' },
+    { icon: Gift, label: 'Gift Card', onClick: () => {}, color: 'text-accent-pink' },
+    { icon: FileText, label: 'Reports', onClick: () => {}, color: 'text-primary' },
   ];
 
   return (

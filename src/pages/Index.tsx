@@ -8,106 +8,161 @@ import {
   BarChart3,
   Smartphone,
   Cloud,
-  Users,
+  WifiOff,
+  Building2,
+  Lock,
+  Sparkles,
+  Play,
+  Check,
+  Star,
+  Store,
+  UtensilsCrossed,
+  ShoppingCart,
+  Pill,
+  Wine,
+  Scissors,
+  Briefcase,
+  GitBranch,
+  ChevronRight,
   CreditCard,
   Package,
-  Store,
-  ChefHat,
-  Sparkles
+  Users,
+  Receipt,
+  TrendingUp,
+  Clock,
+  Layers
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const Index = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   const features = [
     {
       icon: Zap,
       title: 'Lightning Fast',
-      description: 'Sub-second billing with optimized performance',
-      gradient: 'gradient-card-peach',
+      description: 'Sub-second billing with optimized performance for peak hours',
+      color: 'text-accent-blue',
+      gradient: 'accent-card-blue',
     },
     {
       icon: Shield,
       title: 'Enterprise Security',
-      description: 'Bank-grade encryption & compliance',
-      gradient: 'gradient-card-mint',
+      description: 'Bank-grade encryption & full compliance with global standards',
+      color: 'text-accent-purple',
+      gradient: 'accent-card-purple',
     },
     {
       icon: Globe,
-      title: 'Multi-Branch',
-      description: 'Manage unlimited locations from one dashboard',
-      gradient: 'gradient-card-purple',
+      title: 'Multi-Branch Ready',
+      description: 'Manage unlimited locations from a single dashboard',
+      color: 'text-accent-green',
+      gradient: 'accent-card-green',
     },
     {
       icon: Cloud,
       title: 'Cloud-Native',
-      description: 'Access your data anywhere, anytime',
-      gradient: 'gradient-card-blue',
+      description: 'Access your data anywhere with real-time sync across devices',
+      color: 'text-accent-teal',
+      gradient: 'accent-card-teal',
     },
     {
-      icon: Smartphone,
+      icon: WifiOff,
       title: 'Offline-First',
-      description: 'Works without internet, syncs when connected',
-      gradient: 'gradient-card-pink',
+      description: 'Never miss a sale - works without internet, syncs when connected',
+      color: 'text-accent-orange',
+      gradient: 'accent-card-orange',
     },
     {
       icon: BarChart3,
       title: 'Real-time Analytics',
-      description: 'Insights that drive business growth',
-      gradient: 'gradient-card-peach',
+      description: 'Powerful insights and reports that drive business growth',
+      color: 'text-accent-pink',
+      gradient: 'accent-card-purple',
     },
   ];
 
   const industries = [
-    { icon: Store, name: 'Retail', gradient: 'gradient-card-blue' },
-    { icon: ChefHat, name: 'Restaurants', gradient: 'gradient-card-peach' },
-    { icon: Package, name: 'Supermarkets', gradient: 'gradient-card-mint' },
-    { icon: CreditCard, name: 'Services', gradient: 'gradient-card-purple' },
-    { icon: Users, name: 'Salons', gradient: 'gradient-card-pink' },
-    { icon: Globe, name: 'Franchises', gradient: 'gradient-card-blue' },
+    { icon: Store, name: 'Retail Stores', color: 'text-accent-blue' },
+    { icon: UtensilsCrossed, name: 'Restaurants', color: 'text-accent-orange' },
+    { icon: ShoppingCart, name: 'Supermarkets', color: 'text-accent-green' },
+    { icon: Pill, name: 'Pharmacies', color: 'text-accent-teal' },
+    { icon: Wine, name: 'Bars & Pubs', color: 'text-accent-purple' },
+    { icon: Scissors, name: 'Salons & Spas', color: 'text-accent-pink' },
+    { icon: Briefcase, name: 'Services', color: 'text-accent-indigo' },
+    { icon: GitBranch, name: 'Franchises', color: 'text-accent-blue' },
   ];
 
-  const productCards = [
-    { title: 'Saiplore', subtitle: 'Gamma', gradient: 'from-pink-200 via-purple-200 to-blue-200' },
-    { title: 'Total Go', subtitle: 'Exocred Ediness', gradient: 'from-cyan-200 via-teal-200 to-blue-200' },
-    { title: 'Totule Plat', subtitle: 'Souringe Shaca', gradient: 'from-pink-100 via-rose-100 to-orange-100' },
-    { title: 'Feel Blor', subtitle: 'Gradest Athor', gradient: 'from-purple-200 via-indigo-200 to-blue-200' },
+  const whyUsFeatures = [
+    { icon: Zap, title: 'Speed', description: 'Sub-second transactions' },
+    { icon: WifiOff, title: 'Offline Mode', description: 'Never lose a sale' },
+    { icon: Building2, title: 'Multi-Branch', description: 'Unlimited locations' },
+    { icon: Lock, title: 'Secure', description: 'Enterprise encryption' },
+    { icon: Cloud, title: 'SaaS Ready', description: 'Always up to date' },
+    { icon: Layers, title: 'Modular', description: 'Pay for what you need' },
+  ];
+
+  const stats = [
+    { value: '50K+', label: 'Businesses' },
+    { value: '10M+', label: 'Transactions/Day' },
+    { value: '99.99%', label: 'Uptime' },
+    { value: '150+', label: 'Countries' },
+  ];
+
+  const pricingPlans = [
+    {
+      name: 'Starter',
+      price: '$29',
+      period: '/month',
+      description: 'Perfect for small businesses',
+      features: ['1 Location', '2 Users', 'Basic Reports', 'Email Support', '1,000 Products'],
+      highlighted: false,
+    },
+    {
+      name: 'Professional',
+      price: '$79',
+      period: '/month',
+      description: 'For growing businesses',
+      features: ['5 Locations', '10 Users', 'Advanced Analytics', 'Priority Support', 'Unlimited Products', 'Inventory Management', 'Customer CRM'],
+      highlighted: true,
+    },
+    {
+      name: 'Enterprise',
+      price: 'Custom',
+      period: '',
+      description: 'For large organizations',
+      features: ['Unlimited Locations', 'Unlimited Users', 'Custom Reports', '24/7 Phone Support', 'API Access', 'White-label Options', 'Dedicated Manager'],
+      highlighted: false,
+    },
   ];
 
   return (
     <div className="min-h-screen bg-background overflow-hidden">
-      {/* Animated Background - Soft Organic Gradients */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full organic-gradient" />
-        <motion.div 
-          animate={{ scale: [1, 1.1, 1], rotate: [0, 5, 0] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-1/4 -right-1/4 w-[800px] h-[800px] rounded-full morph-shape"
-          style={{ background: 'radial-gradient(circle, hsl(270 100% 92% / 0.5), transparent 70%)' }}
-        />
-        <motion.div 
-          animate={{ scale: [1, 1.15, 1], rotate: [0, -5, 0] }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -bottom-1/4 -left-1/4 w-[600px] h-[600px] rounded-full morph-shape"
-          style={{ background: 'radial-gradient(circle, hsl(330 100% 92% / 0.5), transparent 70%)' }}
-        />
-        <motion.div 
-          animate={{ scale: [1, 1.2, 1] }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full"
-          style={{ background: 'radial-gradient(circle, hsl(210 100% 94% / 0.4), transparent 70%)' }}
-        />
-      </div>
-
+      {/* Gradient Mesh Background */}
+      <div className="fixed inset-0 gradient-mesh pointer-events-none" />
+      
       {/* Header */}
       <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative z-10 glass-card border-b border-border/50"
+        className="relative z-50 glass-card border-b border-border/50 sticky top-0"
       >
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-pastel-pink via-pastel-purple to-pastel-blue flex items-center justify-center shadow-lg">
-              <span className="text-xl font-bold text-foreground">N</span>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-glow-primary">
+              <span className="text-xl font-bold text-primary-foreground">N</span>
             </div>
             <span className="text-xl font-bold text-foreground">NexusPOS</span>
           </div>
@@ -119,9 +174,10 @@ const Index = () => {
           </nav>
 
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" className="text-muted-foreground">Sign In</Button>
+            <ThemeToggle />
+            <Button variant="ghost" size="sm" className="text-muted-foreground hidden sm:flex">Sign In</Button>
             <Link to="/pos">
-              <Button size="sm" className="gap-2 rounded-full bg-gradient-to-r from-pastel-pink via-pastel-purple to-pastel-blue text-foreground hover:opacity-90 shadow-md">
+              <Button size="sm" className="btn-gradient rounded-full gap-2">
                 Launch POS
                 <ArrowRight className="w-4 h-4" />
               </Button>
@@ -131,125 +187,112 @@ const Index = () => {
       </motion.header>
 
       {/* Hero Section */}
-      <section className="relative z-10 container mx-auto px-4 pt-16 pb-24">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
+      <section className="relative z-10 container mx-auto px-4 pt-20 pb-32">
+        <div className="max-w-4xl mx-auto text-center">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8"
           >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-sm border border-white/80 shadow-sm mb-6"
-            >
-              <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-sm text-muted-foreground">Enterprise-Grade POS SaaS</span>
-            </motion.div>
-
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight text-foreground">
-              Product Design
-              <br />
-              <span className="gradient-text">Page Web</span>
-              <br />
-              <span className="text-foreground">Slider Block</span>
-            </h1>
-
-            <p className="text-base text-muted-foreground mb-8 max-w-md leading-relaxed">
-              Cloud-native, multi-tenant point of sale software built for retail, 
-              restaurants, and service businesses of all sizes.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-3">
-              <Link to="/pos">
-                <Button className="rounded-full px-6 bg-gradient-to-r from-cyan-400 to-blue-400 text-white hover:opacity-90 shadow-lg">
-                  Try Live Demo
-                </Button>
-              </Link>
-              <Button variant="outline" className="rounded-full px-6 border-2 bg-white/50 backdrop-blur-sm">
-                Watch Video
-              </Button>
-              <span className="text-xs text-muted-foreground ml-2">Some helper notes</span>
-            </div>
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="text-sm text-muted-foreground">Enterprise-Grade POS SaaS Platform</span>
           </motion.div>
 
-          {/* Right Content - Product Cards Grid */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="grid grid-cols-2 gap-4"
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
           >
-            {/* Main Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="col-span-1 row-span-2 rounded-3xl p-6 bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 shadow-xl overflow-hidden relative"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-pink-200/50 via-purple-200/50 to-cyan-200/50" />
-              <div className="relative z-10">
-                <h3 className="text-xl font-semibold text-foreground mb-1">Saiplore</h3>
-                <p className="text-lg text-muted-foreground mb-4">Gamma</p>
-                <div className="h-2 w-16 rounded-full bg-gradient-to-r from-pink-300 to-purple-300 mb-2" />
-                <p className="text-sm text-muted-foreground">Gountnt Onbrew</p>
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white/40 to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6 flex gap-2">
-                <span className="px-4 py-2 rounded-full bg-gradient-to-r from-teal-300 to-cyan-300 text-sm font-medium text-foreground shadow-sm">Quick View</span>
-                <span className="px-4 py-2 rounded-full bg-gradient-to-r from-pink-300 to-rose-300 text-sm font-medium text-foreground shadow-sm">Learn More</span>
-              </div>
-            </motion.div>
+            The World's{' '}
+            <span className="gradient-text">Smartest</span>
+            <br />
+            POS SaaS Platform
+          </motion.h1>
 
-            {/* Top Right Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="rounded-3xl p-5 bg-gradient-to-br from-cyan-100 via-teal-50 to-blue-100 shadow-lg"
-            >
-              <div className="h-16 w-full rounded-2xl bg-gradient-to-r from-cyan-200 to-blue-200 mb-3" />
-              <h4 className="font-semibold text-foreground">Total Go</h4>
-              <p className="text-sm text-muted-foreground">Exocred Ediness</p>
-              <div className="mt-3 h-1.5 w-12 rounded-full bg-gradient-to-r from-teal-300 to-cyan-300" />
-            </motion.div>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto"
+          >
+            Cloud-native, multi-tenant point of sale built for retail, restaurants, 
+            and service businesses of all sizes. Fast. Secure. Always connected.
+          </motion.p>
 
-            {/* Middle Right Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="rounded-3xl p-5 bg-white/70 backdrop-blur-sm shadow-lg border border-white/80"
-            >
-              <div className="h-12 w-full rounded-2xl bg-gradient-to-r from-pink-100 to-orange-100 mb-3" />
-              <h4 className="font-semibold text-foreground">Totule Plat</h4>
-              <p className="text-sm text-muted-foreground">Souringe Shaca</p>
-            </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          >
+            <Link to="/pos">
+              <Button size="lg" className="btn-gradient rounded-full px-8 h-14 text-lg gap-2 shadow-glow-primary">
+                Start Free Trial
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </Link>
+            <Button size="lg" variant="outline" className="btn-outline-glow rounded-full px-8 h-14 text-lg gap-2">
+              <Play className="w-5 h-5" />
+              Watch Demo
+            </Button>
+          </motion.div>
+        </div>
 
-            {/* Bottom Cards Row */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="col-span-2 grid grid-cols-2 gap-4"
-            >
-              <div className="rounded-3xl p-5 bg-white/70 backdrop-blur-sm shadow-lg border border-white/80">
-                <p className="text-sm text-muted-foreground mb-1">Gradest Athor</p>
-                <h4 className="font-semibold text-foreground">AwlOmss</h4>
-              </div>
-              <div className="rounded-3xl p-5 bg-gradient-to-br from-purple-50 to-indigo-100 shadow-lg">
-                <p className="text-sm text-muted-foreground mb-1">Feel Blor</p>
-                <div className="h-8 w-full rounded-xl bg-gradient-to-r from-purple-200 to-indigo-200" />
-              </div>
-            </motion.div>
+        {/* Stats */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
+        >
+          {stats.map((stat, index) => (
+            <div key={stat.label} className="text-center">
+              <div className="text-3xl md:text-4xl font-bold gradient-text-blue">{stat.value}</div>
+              <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
+            </div>
+          ))}
+        </motion.div>
+      </section>
+
+      {/* Trust Section */}
+      <section className="relative z-10 py-16 border-y border-border/50">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-10"
+          >
+            <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
+              Built for All Business Types
+            </p>
+          </motion.div>
+          
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="flex flex-wrap justify-center items-center gap-8 md:gap-12"
+          >
+            {industries.slice(0, 6).map((industry, index) => (
+              <motion.div
+                key={industry.name}
+                variants={itemVariants}
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <industry.icon className={`w-5 h-5 ${industry.color}`} />
+                <span className="text-sm font-medium">{industry.name}</span>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="relative z-10 py-20">
+      <section id="features" className="relative z-10 py-24">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -257,37 +300,40 @@ const Index = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-              Built for <span className="gradient-text">Modern Businesses</span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Everything You Need to <span className="gradient-text">Succeed</span>
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Everything you need to run your business, in one powerful platform.
+              Powerful features designed for modern businesses. One platform, endless possibilities.
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
             {features.map((feature, index) => (
               <motion.div
                 key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className={`${feature.gradient} rounded-3xl p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1`}
+                variants={itemVariants}
+                className={`accent-card ${feature.gradient} bg-card p-6 cursor-pointer group`}
               >
-                <div className="w-12 h-12 rounded-2xl bg-white/60 backdrop-blur-sm flex items-center justify-center mb-4 shadow-sm">
-                  <feature.icon className="w-6 h-6 text-foreground" />
+                <div className={`w-12 h-12 rounded-xl bg-muted flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                  <feature.icon className={`w-6 h-6 ${feature.color}`} />
                 </div>
-                <h3 className="text-lg font-semibold mb-2 text-foreground">{feature.title}</h3>
+                <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
                 <p className="text-muted-foreground text-sm">{feature.description}</p>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Industries Section */}
-      <section id="industries" className="relative z-10 py-20">
+      <section id="industries" className="relative z-10 py-24 bg-muted/30">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -295,77 +341,237 @@ const Index = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
               One Platform, <span className="gradient-text">Every Industry</span>
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Tailored solutions for retail, hospitality, and service businesses.
+              Tailored solutions for retail, hospitality, healthcare, and service businesses worldwide.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-4"
+          >
             {industries.map((industry, index) => (
               <motion.div
                 key={industry.name}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-                className={`${industry.gradient} rounded-3xl p-6 text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer`}
+                variants={itemVariants}
+                className="glass-card rounded-2xl p-6 text-center hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer group"
               >
-                <div className="w-12 h-12 rounded-2xl bg-white/60 backdrop-blur-sm flex items-center justify-center mx-auto mb-3 shadow-sm">
-                  <industry.icon className="w-6 h-6 text-foreground" />
+                <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <industry.icon className={`w-7 h-7 ${industry.color}`} />
                 </div>
-                <p className="font-medium text-foreground">{industry.name}</p>
+                <p className="font-semibold text-sm">{industry.name}</p>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="relative z-10 py-20">
+      {/* Why Us Section */}
+      <section className="relative z-10 py-24">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="rounded-[2.5rem] p-8 md:p-12 text-center max-w-4xl mx-auto bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 shadow-2xl"
+            className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-              Ready to Transform Your Business?
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Why Choose <span className="gradient-text">NexusPOS</span>?
             </h2>
-            <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-              Start your free trial today. No credit card required.
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Built by industry experts with decades of retail and hospitality experience.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/pos">
-                <Button className="rounded-full px-8 py-6 bg-gradient-to-r from-teal-400 to-cyan-400 text-white hover:opacity-90 shadow-lg text-lg">
-                  Start Free Trial
-                  <ArrowRight className="w-5 h-5 ml-2" />
+          </motion.div>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"
+          >
+            {whyUsFeatures.map((feature, index) => (
+              <motion.div
+                key={feature.title}
+                variants={itemVariants}
+                className="text-center p-4"
+              >
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                  <feature.icon className="w-6 h-6 text-primary" />
+                </div>
+                <h4 className="font-semibold text-sm mb-1">{feature.title}</h4>
+                <p className="text-xs text-muted-foreground">{feature.description}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section id="pricing" className="relative z-10 py-24 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Simple, Transparent <span className="gradient-text">Pricing</span>
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Start free, scale as you grow. No hidden fees, no surprises.
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto"
+          >
+            {pricingPlans.map((plan, index) => (
+              <motion.div
+                key={plan.name}
+                variants={itemVariants}
+                className={`relative rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 ${
+                  plan.highlighted 
+                    ? 'bg-gradient-to-b from-primary/10 to-secondary/10 border-2 border-primary shadow-glow-primary' 
+                    : 'glass-card border border-border'
+                }`}
+              >
+                {plan.highlighted && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-semibold">
+                    Most Popular
+                  </div>
+                )}
+                <div className="text-center mb-6">
+                  <h3 className="text-lg font-semibold mb-2">{plan.name}</h3>
+                  <div className="flex items-baseline justify-center gap-1">
+                    <span className="text-4xl font-bold">{plan.price}</span>
+                    <span className="text-muted-foreground">{plan.period}</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground mt-2">{plan.description}</p>
+                </div>
+                <ul className="space-y-3 mb-6">
+                  {plan.features.map((feature, i) => (
+                    <li key={i} className="flex items-center gap-2 text-sm">
+                      <Check className="w-4 h-4 text-success flex-shrink-0" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button 
+                  className={`w-full ${plan.highlighted ? 'btn-gradient' : ''}`}
+                  variant={plan.highlighted ? 'default' : 'outline'}
+                >
+                  {plan.name === 'Enterprise' ? 'Contact Sales' : 'Get Started'}
                 </Button>
-              </Link>
-              <Button variant="outline" className="rounded-full px-8 py-6 bg-white/60 backdrop-blur-sm text-lg">
-                Contact Sales
-              </Button>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="relative z-10 py-24">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-4xl mx-auto text-center glass-card rounded-3xl p-12 relative overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5" />
+            <div className="relative z-10">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Ready to Transform Your Business?
+              </h2>
+              <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
+                Start your free 14-day trial today. No credit card required. 
+                Cancel anytime.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Link to="/pos">
+                  <Button size="lg" className="btn-gradient rounded-full px-8 h-14 text-lg gap-2">
+                    Start Free Trial
+                    <ArrowRight className="w-5 h-5" />
+                  </Button>
+                </Link>
+                <Button size="lg" variant="outline" className="rounded-full px-8 h-14 text-lg gap-2">
+                  Contact Sales
+                  <ChevronRight className="w-5 h-5" />
+                </Button>
+              </div>
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-border/50 py-8 bg-white/40 backdrop-blur-sm">
+      <footer className="relative z-10 glass-card border-t border-border/50 py-12">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-pastel-pink via-pastel-purple to-pastel-blue flex items-center justify-center shadow-md">
-                <span className="text-sm font-bold text-foreground">N</span>
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                  <span className="text-sm font-bold text-primary-foreground">N</span>
+                </div>
+                <span className="font-bold">NexusPOS</span>
               </div>
-              <span className="font-semibold text-foreground">NexusPOS</span>
+              <p className="text-sm text-muted-foreground">
+                The world's smartest POS platform for modern businesses.
+              </p>
             </div>
+            <div>
+              <h4 className="font-semibold mb-4">Product</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="#features" className="hover:text-foreground transition-colors">Features</a></li>
+                <li><a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a></li>
+                <li><a href="#" className="hover:text-foreground transition-colors">Integrations</a></li>
+                <li><a href="#" className="hover:text-foreground transition-colors">API</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Company</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="#" className="hover:text-foreground transition-colors">About</a></li>
+                <li><a href="#" className="hover:text-foreground transition-colors">Blog</a></li>
+                <li><a href="#" className="hover:text-foreground transition-colors">Careers</a></li>
+                <li><a href="#" className="hover:text-foreground transition-colors">Contact</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Legal</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="#" className="hover:text-foreground transition-colors">Privacy</a></li>
+                <li><a href="#" className="hover:text-foreground transition-colors">Terms</a></li>
+                <li><a href="#" className="hover:text-foreground transition-colors">Security</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-border/50 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">
               © 2024 NexusPOS. All rights reserved.
             </p>
+            <div className="flex items-center gap-4">
+              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+              </a>
+              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              </a>
+              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              </a>
+            </div>
           </div>
         </div>
       </footer>

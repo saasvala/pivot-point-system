@@ -52,7 +52,7 @@ export const ReceiptSuccess = ({
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="w-20 h-20 rounded-full bg-success/20 flex items-center justify-center mx-auto mb-4 neon-glow-green"
+            className="w-20 h-20 rounded-full bg-success/20 flex items-center justify-center mx-auto mb-4 shadow-glow-success"
           >
             <motion.div
               initial={{ scale: 0 }}
@@ -113,7 +113,7 @@ export const ReceiptSuccess = ({
 
           {/* New Sale Button */}
           <Button
-            variant="neonCyan"
+            variant="gradient"
             size="xl"
             className="w-full gap-2"
             onClick={onNewSale}
