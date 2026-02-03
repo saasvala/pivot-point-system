@@ -8,152 +8,152 @@
 
 @layer base {
   :root {
-    /* ============ SOFT LIGHT THEME ============ */
-    --background: 220 20% 97%;
-    --foreground: 222 47% 11%;
+    /* ============ SOFT LIGHT THEME - INDIGO/PURPLE/BLUE ============ */
+    --background: 240 33% 97%;
+    --foreground: 263 100% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 263 100% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 263 100% 12%;
 
-    /* Primary: Electric Blue */
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
+    /* Primary: Night Indigo #1B003F */
+    --primary: 270 100% 12%;
+    --primary-foreground: 240 67% 94%;
 
-    /* Secondary: Purple/Indigo */
-    --secondary: 263 70% 58%;
+    /* Secondary: Twilight Purple #4B0082 */
+    --secondary: 275 100% 25%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 240 20% 94%;
+    --muted-foreground: 240 10% 40%;
 
-    /* Accent: Teal */
-    --accent: 172 66% 50%;
+    /* Accent: Dusky Blue #6495ED */
+    --accent: 219 79% 66%;
     --accent-foreground: 0 0% 100%;
 
     /* Destructive: Soft Red */
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 217 91% 60%;
+    --border: 240 15% 88%;
+    --input: 240 15% 88%;
+    --ring: 275 100% 25%;
 
     --radius: 0.75rem;
 
     /* Glass Effects - Light */
-    --glass-bg: 0 0% 100% / 0.8;
-    --glass-border: 0 0% 100% / 0.9;
-    --glass-shadow: 0 8px 32px hsl(220 60% 50% / 0.08);
+    --glass-bg: 0 0% 100% / 0.85;
+    --glass-border: 240 67% 94% / 0.9;
+    --glass-shadow: 0 8px 32px hsl(270 60% 30% / 0.08);
 
     /* Status Colors */
     --success: 160 84% 39%;
     --success-foreground: 0 0% 100%;
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
-    --info: 217 91% 60%;
+    --info: 219 79% 66%;
     --info-foreground: 0 0% 100%;
 
-    /* Accent Colors for Cards */
-    --accent-blue: 217 91% 60%;
-    --accent-purple: 263 70% 58%;
+    /* Accent Colors for Cards - Indigo/Purple/Blue Palette */
+    --accent-blue: 219 79% 66%;
+    --accent-purple: 275 100% 25%;
     --accent-green: 160 84% 39%;
     --accent-orange: 38 92% 50%;
     --accent-red: 0 72% 51%;
-    --accent-teal: 172 66% 50%;
+    --accent-teal: 185 69% 50%;
     --accent-pink: 330 81% 60%;
-    --accent-indigo: 239 84% 67%;
+    --accent-indigo: 270 100% 12%;
 
     /* Sidebar */
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 222 47% 11%;
-    --sidebar-primary: 217 91% 60%;
+    --sidebar-foreground: 263 100% 12%;
+    --sidebar-primary: 275 100% 25%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 14% 96%;
-    --sidebar-accent-foreground: 222 47% 11%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-accent: 240 20% 94%;
+    --sidebar-accent-foreground: 263 100% 12%;
+    --sidebar-border: 240 15% 88%;
+    --sidebar-ring: 275 100% 25%;
 
     /* Chart colors */
-    --chart-1: 217 91% 60%;
-    --chart-2: 263 70% 58%;
+    --chart-1: 219 79% 66%;
+    --chart-2: 275 100% 25%;
     --chart-3: 160 84% 39%;
     --chart-4: 38 92% 50%;
     --chart-5: 330 81% 60%;
   }
 
   .dark {
-    /* ============ SOFT DARK THEME ============ */
-    --background: 222 47% 8%;
-    --foreground: 210 40% 98%;
+    /* ============ SOFT DARK THEME - INDIGO/PURPLE/BLUE ============ */
+    --background: 240 64% 7%;
+    --foreground: 240 67% 94%;
 
-    --card: 222 47% 11%;
-    --card-foreground: 210 40% 98%;
+    --card: 240 64% 10%;
+    --card-foreground: 240 67% 94%;
 
-    --popover: 222 47% 11%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 240 64% 10%;
+    --popover-foreground: 240 67% 94%;
 
-    /* Primary: Electric Blue/Cyan */
-    --primary: 199 89% 48%;
-    --primary-foreground: 222 47% 8%;
+    /* Primary: Dusky Blue #6495ED */
+    --primary: 219 79% 66%;
+    --primary-foreground: 240 64% 7%;
 
-    /* Secondary: Purple */
-    --secondary: 263 70% 58%;
+    /* Secondary: Twilight Purple #4B0082 */
+    --secondary: 275 100% 40%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 240 40% 15%;
+    --muted-foreground: 240 20% 60%;
 
-    /* Accent: Teal */
-    --accent: 172 66% 50%;
-    --accent-foreground: 222 47% 8%;
+    /* Accent: Lavender Haze #E6E6FA */
+    --accent: 240 67% 94%;
+    --accent-foreground: 240 64% 7%;
 
     /* Destructive: Soft Red */
     --destructive: 0 62% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 217 33% 20%;
-    --input: 217 33% 17%;
-    --ring: 199 89% 48%;
+    --border: 240 40% 18%;
+    --input: 240 40% 15%;
+    --ring: 219 79% 66%;
 
     /* Glass Effects - Dark */
-    --glass-bg: 222 47% 11% / 0.7;
-    --glass-border: 217 33% 25% / 0.4;
-    --glass-shadow: 0 8px 32px hsl(222 47% 3% / 0.5);
+    --glass-bg: 240 64% 10% / 0.8;
+    --glass-border: 240 40% 25% / 0.5;
+    --glass-shadow: 0 8px 32px hsl(240 64% 3% / 0.5);
 
     /* Status Colors */
     --success: 160 84% 45%;
     --success-foreground: 0 0% 100%;
     --warning: 38 92% 50%;
-    --warning-foreground: 222 47% 8%;
-    --info: 199 89% 48%;
-    --info-foreground: 222 47% 8%;
+    --warning-foreground: 240 64% 7%;
+    --info: 219 79% 66%;
+    --info-foreground: 240 64% 7%;
 
-    /* Accent Colors for Cards */
-    --accent-blue: 199 89% 48%;
-    --accent-purple: 263 70% 60%;
+    /* Accent Colors for Cards - Indigo/Purple/Blue Palette */
+    --accent-blue: 219 79% 66%;
+    --accent-purple: 275 100% 50%;
     --accent-green: 160 84% 45%;
     --accent-orange: 38 92% 50%;
     --accent-red: 0 62% 55%;
-    --accent-teal: 172 66% 50%;
+    --accent-teal: 185 69% 55%;
     --accent-pink: 330 81% 65%;
-    --accent-indigo: 239 84% 67%;
+    --accent-indigo: 270 80% 50%;
 
     /* Sidebar */
-    --sidebar-background: 222 47% 10%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 199 89% 48%;
-    --sidebar-primary-foreground: 222 47% 8%;
-    --sidebar-accent: 217 33% 17%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 217 33% 20%;
-    --sidebar-ring: 199 89% 48%;
+    --sidebar-background: 240 64% 9%;
+    --sidebar-foreground: 240 67% 94%;
+    --sidebar-primary: 219 79% 66%;
+    --sidebar-primary-foreground: 240 64% 7%;
+    --sidebar-accent: 240 40% 15%;
+    --sidebar-accent-foreground: 240 67% 94%;
+    --sidebar-border: 240 40% 18%;
+    --sidebar-ring: 219 79% 66%;
 
     /* Chart colors */
-    --chart-1: 199 89% 48%;
-    --chart-2: 263 70% 60%;
+    --chart-1: 219 79% 66%;
+    --chart-2: 275 100% 50%;
     --chart-3: 160 84% 45%;
     --chart-4: 38 92% 50%;
     --chart-5: 330 81% 65%;
