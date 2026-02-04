@@ -3,10 +3,7 @@ import { Link } from 'react-router-dom';
 import { 
   ArrowRight, 
   Zap, 
-  Shield, 
   Globe, 
-  BarChart3,
-  Smartphone,
   Cloud,
   WifiOff,
   Building2,
@@ -20,15 +17,10 @@ import {
   Pill,
   Coffee,
   Scissors,
-  CreditCard,
-  Package,
-  Users,
-  Receipt,
   ChevronRight,
-  Layers,
-  ScanBarcode,
-  Calculator
+  Layers
 } from 'lucide-react';
+import FeatureShowcase from '@/components/landing/FeatureShowcase';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import posHero3D from '@/assets/pos-hero-3d.png';
@@ -47,50 +39,7 @@ const Index = () => {
     visible: { opacity: 1, y: 0 }
   };
 
-  const features = [
-    {
-      icon: ScanBarcode,
-      title: 'Instant Checkout',
-      description: 'Lightning-fast barcode scanning and billing for seamless transactions',
-      color: 'text-accent-blue',
-      gradient: 'accent-card-blue',
-    },
-    {
-      icon: Shield,
-      title: 'Secure Payments',
-      description: 'Accept cards, UPI, wallets with bank-grade encryption',
-      color: 'text-accent-purple',
-      gradient: 'accent-card-purple',
-    },
-    {
-      icon: Package,
-      title: 'Smart Inventory',
-      description: 'Real-time stock tracking with low-stock alerts and auto-reorder',
-      color: 'text-accent-green',
-      gradient: 'accent-card-green',
-    },
-    {
-      icon: Cloud,
-      title: 'Cloud Sync',
-      description: 'Access your data anywhere with real-time sync across devices',
-      color: 'text-accent-indigo',
-      gradient: 'accent-card-purple',
-    },
-    {
-      icon: WifiOff,
-      title: 'Offline Mode',
-      description: 'Never miss a sale - works without internet, syncs when connected',
-      color: 'text-accent-orange',
-      gradient: 'accent-card-orange',
-    },
-    {
-      icon: BarChart3,
-      title: 'Sales Analytics',
-      description: 'Powerful insights and reports that drive business growth',
-      color: 'text-accent-pink',
-      gradient: 'accent-card-purple',
-    },
-  ];
+  // Features moved to FeatureShowcase component
 
   const industries = [
     { icon: Store, name: 'Retail Stores', description: 'Fashion, electronics, general stores', color: 'text-accent-blue' },
@@ -309,46 +258,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="relative z-10 py-24">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Everything Your Business <span className="gradient-text">Needs</span>
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Complete POS ecosystem for billing, inventory, payments, and analytics. One platform, endless possibilities.
-            </p>
-          </motion.div>
-
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            {features.map((feature) => (
-              <motion.div
-                key={feature.title}
-                variants={itemVariants}
-                className={`accent-card ${feature.gradient} bg-card p-6 cursor-pointer group`}
-              >
-                <div className={`w-12 h-12 rounded-xl bg-muted flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                  <feature.icon className={`w-6 h-6 ${feature.color}`} />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground text-sm">{feature.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      {/* Features Section - World-Class Showcase */}
+      <FeatureShowcase />
 
       {/* Industries Section */}
       <section id="industries" className="relative z-10 py-24 bg-muted/30">
