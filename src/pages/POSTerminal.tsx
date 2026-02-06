@@ -8,6 +8,11 @@ import { SearchBar } from '@/components/pos/SearchBar';
 import { BottomActionBar } from '@/components/pos/BottomActionBar';
 import { EnhancedPaymentModal } from '@/components/pos/EnhancedPaymentModal';
 import { EnhancedReceipt } from '@/components/pos/EnhancedReceipt';
+import { CustomerModal } from '@/components/pos/CustomerModal';
+import { BarcodeScanner } from '@/components/pos/BarcodeScanner';
+import { OfflineIndicator } from '@/components/pos/OfflineIndicator';
+import { ThermalReceipt, printReceipt } from '@/components/pos/ThermalReceipt';
+import { useOfflineSync } from '@/hooks/useOfflineSync';
 import { categories, products } from '@/data/mockData';
 import { CartItem, Product, Customer, PaymentMethod } from '@/types/pos';
 import { toast } from 'sonner';
@@ -35,9 +40,14 @@ const POSTerminal = () => {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isReceiptOpen, setIsReceiptOpen] = useState(false);
   const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);
+  const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
   
   // Held bills
   const [heldBills, setHeldBills] = useState<HeldBill[]>([]);
+
+  // Offline sync
+  const { isOnline, pendingCount, isSyncing, saveTransaction, syncPendingTransactions } = useOfflineSync();
   
   // Last transaction for receipt
   const [lastTransaction, setLastTransaction] = useState<{
@@ -103,6 +113,16 @@ const POSTerminal = () => {
     cartItems.map(item => item.product.id), 
     [cartItems]
   );
+
+  // Barcode scan handler
+  const handleBarcodeScan = useCallback((code: string) => {
+    const product = products.find(p => p.sku.toLowerCase() === code.toLowerCase());
+    if (product) {
+      handleProductSelect(product);
+    } else {
+      toast.error(`Product not found: ${code}`);
+    }
+  }, []);
 
   // Add product to cart
   const handleProductSelect = useCallback((product: Product) => {
@@ -210,7 +230,6 @@ const POSTerminal = () => {
       return;
     }
     
-    // Recall the most recent held bill
     const lastHeld = heldBills[heldBills.length - 1];
     setCartItems(lastHeld.items);
     setSelectedCustomer(lastHeld.customer);
@@ -232,7 +251,7 @@ const POSTerminal = () => {
   const handlePaymentComplete = useCallback((method: PaymentMethod, amountPaid: number, change: number) => {
     const transactionId = `TXN-${Date.now().toString(36).toUpperCase()}`;
     
-    setLastTransaction({
+    const txData = {
       id: transactionId,
       items: [...cartItems],
       subtotal,
@@ -243,11 +262,16 @@ const POSTerminal = () => {
       change,
       method,
       customer: selectedCustomer,
-    });
+    };
+
+    setLastTransaction(txData);
+
+    // Save to IndexedDB for offline support
+    saveTransaction(txData);
     
     setIsPaymentModalOpen(false);
     setIsReceiptOpen(true);
-  }, [cartItems, subtotal, taxAmount, totalDiscount, total, selectedCustomer]);
+  }, [cartItems, subtotal, taxAmount, totalDiscount, total, selectedCustomer, saveTransaction]);
 
   // Handle new sale after receipt
   const handleNewSale = useCallback(() => {
@@ -259,10 +283,15 @@ const POSTerminal = () => {
     toast.success('Ready for new sale');
   }, []);
 
+  // Print thermal receipt
+  const handlePrintReceipt = useCallback(() => {
+    printReceipt('receipt-printable', 'thermal');
+    toast.success('Printing receipt...');
+  }, []);
+
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Prevent if typing in input
       if ((e.target as HTMLElement).tagName === 'INPUT') return;
       
       switch (e.key) {
@@ -276,7 +305,11 @@ const POSTerminal = () => {
           break;
         case 'F9':
           e.preventDefault();
-          toast.info('Customer selection');
+          setIsCustomerModalOpen(true);
+          break;
+        case 'F7':
+          e.preventDefault();
+          setIsScannerOpen(true);
           break;
         case 'Delete':
           if (e.shiftKey) {
@@ -299,13 +332,23 @@ const POSTerminal = () => {
 
   return (
     <div className="h-screen bg-background flex flex-col overflow-hidden">
-      {/* Header */}
-      <POSHeader
-        businessName="NexusPOS"
-        branchName="Main Branch"
-        cashierName="Alex Johnson"
-        onMenuClick={() => toast.info('Menu')}
-      />
+      {/* Header with offline indicator */}
+      <div className="relative">
+        <POSHeader
+          businessName="NexusPOS"
+          branchName="Main Branch"
+          cashierName="Alex Johnson"
+          onMenuClick={() => toast.info('Menu')}
+        />
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 z-10">
+          <OfflineIndicator
+            isOnline={isOnline}
+            pendingCount={pendingCount}
+            isSyncing={isSyncing}
+            onSync={syncPendingTransactions}
+          />
+        </div>
+      </div>
 
       {/* Main Content - 65/35 Split */}
       <div className="flex-1 flex overflow-hidden">
@@ -320,7 +363,7 @@ const POSTerminal = () => {
             <SearchBar
               value={searchQuery}
               onChange={setSearchQuery}
-              onBarcodeClick={() => toast.info('Barcode scanner ready')}
+              onBarcodeClick={() => setIsScannerOpen(true)}
             />
           </div>
 
@@ -357,7 +400,7 @@ const POSTerminal = () => {
             onUpdateItemDiscount={handleUpdateItemDiscount}
             onUpdateItemNote={handleUpdateItemNote}
             onCheckout={handleCheckout}
-            onSelectCustomer={() => toast.info('Customer selection coming soon')}
+            onSelectCustomer={() => setIsCustomerModalOpen(true)}
             globalDiscount={globalDiscount}
             onGlobalDiscountChange={setGlobalDiscount}
           />
@@ -372,7 +415,7 @@ const POSTerminal = () => {
           onSplitBill={() => toast.info('Split bill')}
           onRecallBill={handleRecallBill}
           onApplyDiscount={() => toast.info('Apply discount')}
-          onSelectCustomer={() => toast.info('Select customer')}
+          onSelectCustomer={() => setIsCustomerModalOpen(true)}
           onViewReceipts={() => toast.info('View receipts')}
           cartItemCount={itemCount}
           hasHeldBills={heldBills.length}
@@ -409,13 +452,31 @@ const POSTerminal = () => {
                 setIsMobileCartOpen(false);
                 handleCheckout();
               }}
-              onSelectCustomer={() => toast.info('Customer selection coming soon')}
+              onSelectCustomer={() => {
+                setIsMobileCartOpen(false);
+                setIsCustomerModalOpen(true);
+              }}
               globalDiscount={globalDiscount}
               onGlobalDiscountChange={setGlobalDiscount}
             />
           </SheetContent>
         </Sheet>
       </div>
+
+      {/* Customer Modal */}
+      <CustomerModal
+        isOpen={isCustomerModalOpen}
+        onClose={() => setIsCustomerModalOpen(false)}
+        onSelectCustomer={setSelectedCustomer}
+        selectedCustomer={selectedCustomer}
+      />
+
+      {/* Barcode Scanner */}
+      <BarcodeScanner
+        isOpen={isScannerOpen}
+        onClose={() => setIsScannerOpen(false)}
+        onScan={handleBarcodeScan}
+      />
 
       {/* Payment Modal */}
       <EnhancedPaymentModal
@@ -432,23 +493,37 @@ const POSTerminal = () => {
 
       {/* Receipt Success */}
       {lastTransaction && (
-        <EnhancedReceipt
-          isOpen={isReceiptOpen}
-          onClose={() => setIsReceiptOpen(false)}
-          transactionId={lastTransaction.id}
-          items={lastTransaction.items}
-          subtotal={lastTransaction.subtotal}
-          tax={lastTransaction.tax}
-          discount={lastTransaction.discount}
-          total={lastTransaction.total}
-          amountPaid={lastTransaction.amountPaid}
-          change={lastTransaction.change}
-          paymentMethod={lastTransaction.method}
-          customer={lastTransaction.customer}
-          onPrint={() => toast.success('Printing receipt...')}
-          onEmail={() => toast.success('Receipt sent via email')}
-          onNewSale={handleNewSale}
-        />
+        <>
+          <EnhancedReceipt
+            isOpen={isReceiptOpen}
+            onClose={() => setIsReceiptOpen(false)}
+            transactionId={lastTransaction.id}
+            items={lastTransaction.items}
+            subtotal={lastTransaction.subtotal}
+            tax={lastTransaction.tax}
+            discount={lastTransaction.discount}
+            total={lastTransaction.total}
+            amountPaid={lastTransaction.amountPaid}
+            change={lastTransaction.change}
+            paymentMethod={lastTransaction.method}
+            customer={lastTransaction.customer}
+            onPrint={handlePrintReceipt}
+            onEmail={() => toast.success('Receipt sent via email')}
+            onNewSale={handleNewSale}
+          />
+          <ThermalReceipt
+            transactionId={lastTransaction.id}
+            items={lastTransaction.items}
+            subtotal={lastTransaction.subtotal}
+            tax={lastTransaction.tax}
+            discount={lastTransaction.discount}
+            total={lastTransaction.total}
+            amountPaid={lastTransaction.amountPaid}
+            change={lastTransaction.change}
+            paymentMethod={lastTransaction.method}
+            customer={lastTransaction.customer}
+          />
+        </>
       )}
     </div>
   );
