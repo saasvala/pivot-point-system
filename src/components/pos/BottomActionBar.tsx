@@ -82,7 +82,7 @@ export const BottomActionBar = ({
     },
     { 
       icon: Receipt, 
-      label: 'Receipts', 
+      label: 'Returns', 
       shortcut: 'F10',
       onClick: onViewReceipts, 
       color: 'text-accent-teal',

@@ -51,12 +51,60 @@ export interface Transaction {
   discount: number;
   total: number;
   paymentMethod: PaymentMethod;
+  amountPaid: number;
+  change: number;
   customer?: Customer;
   createdAt: Date;
-  status: 'completed' | 'pending' | 'refunded' | 'voided';
+  status: 'completed' | 'pending' | 'refunded' | 'voided' | 'partial-refund';
 }
 
 export type PaymentMethod = 'cash' | 'card' | 'upi' | 'wallet' | 'split' | 'credit';
+
+export type StaffRole = 'cashier' | 'manager' | 'admin';
+
+export interface StaffMember {
+  id: string;
+  name: string;
+  pin: string;
+  role: StaffRole;
+  permissions: StaffPermissions;
+}
+
+export interface StaffPermissions {
+  canOverridePrice: boolean;
+  canApplyDiscount: boolean;
+  maxDiscountPercent: number;
+  canProcessRefund: boolean;
+  canVoidTransaction: boolean;
+  canAccessReports: boolean;
+}
+
+export interface RefundRequest {
+  transactionId: string;
+  items: RefundItem[];
+  reason: string;
+  refundMethod: PaymentMethod;
+  totalRefund: number;
+  approvedBy?: string;
+  status: 'pending' | 'approved' | 'rejected' | 'completed';
+}
+
+export interface RefundItem {
+  product: Product;
+  quantity: number;
+  refundQuantity: number;
+  refundAmount: number;
+}
+
+export interface AuditLogEntry {
+  id: string;
+  timestamp: Date;
+  staffId: string;
+  staffName: string;
+  action: string;
+  details: string;
+  transactionId?: string;
+}
 
 export interface POSStats {
   todaySales: number;
