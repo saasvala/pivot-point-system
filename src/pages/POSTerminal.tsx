@@ -12,9 +12,11 @@ import { CustomerModal } from '@/components/pos/CustomerModal';
 import { BarcodeScanner } from '@/components/pos/BarcodeScanner';
 import { OfflineIndicator } from '@/components/pos/OfflineIndicator';
 import { ThermalReceipt, printReceipt } from '@/components/pos/ThermalReceipt';
+import { PinAuthModal } from '@/components/pos/PinAuthModal';
+import { RefundModal } from '@/components/pos/RefundModal';
 import { useOfflineSync } from '@/hooks/useOfflineSync';
 import { categories, products } from '@/data/mockData';
-import { CartItem, Product, Customer, PaymentMethod } from '@/types/pos';
+import { CartItem, Product, Customer, PaymentMethod, StaffMember } from '@/types/pos';
 import { toast } from 'sonner';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
@@ -29,6 +31,11 @@ interface HeldBill {
 }
 
 const POSTerminal = () => {
+  // Staff auth state
+  const [currentStaff, setCurrentStaff] = useState<StaffMember | undefined>();
+  const [isPinModalOpen, setIsPinModalOpen] = useState(true); // Show on load
+  const [isRefundModalOpen, setIsRefundModalOpen] = useState(false);
+
   // Core state
   const [selectedCategory, setSelectedCategory] = useState('1');
   const [searchQuery, setSearchQuery] = useState('');
@@ -330,6 +337,25 @@ const POSTerminal = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleHoldBill, handleRecallBill, handleClearCart, handleCheckout, cartItems.length]);
 
+  // Staff login handler
+  const handleStaffLogin = useCallback((staff: StaffMember) => {
+    setCurrentStaff(staff);
+    setIsPinModalOpen(false);
+    toast.success(`Welcome, ${staff.name} (${staff.role})`);
+  }, []);
+
+  // If not authenticated, show PIN modal
+  if (!currentStaff) {
+    return (
+      <PinAuthModal
+        isOpen={true}
+        onClose={() => {}}
+        onAuthenticate={handleStaffLogin}
+        actionLabel="Staff Sign In"
+      />
+    );
+  }
+
   return (
     <div className="h-screen bg-background flex flex-col overflow-hidden">
       {/* Header with offline indicator */}
@@ -337,7 +363,7 @@ const POSTerminal = () => {
         <POSHeader
           businessName="NexusPOS"
           branchName="Main Branch"
-          cashierName="Alex Johnson"
+          cashierName={currentStaff.name}
           onMenuClick={() => toast.info('Menu')}
         />
         <div className="absolute right-4 top-1/2 -translate-y-1/2 z-10">
@@ -416,7 +442,7 @@ const POSTerminal = () => {
           onRecallBill={handleRecallBill}
           onApplyDiscount={() => toast.info('Apply discount')}
           onSelectCustomer={() => setIsCustomerModalOpen(true)}
-          onViewReceipts={() => toast.info('View receipts')}
+          onViewReceipts={() => setIsRefundModalOpen(true)}
           cartItemCount={itemCount}
           hasHeldBills={heldBills.length}
         />
@@ -525,6 +551,13 @@ const POSTerminal = () => {
           />
         </>
       )}
+
+      {/* Refund Modal */}
+      <RefundModal
+        isOpen={isRefundModalOpen}
+        onClose={() => setIsRefundModalOpen(false)}
+        currentStaff={currentStaff}
+      />
     </div>
   );
 };
