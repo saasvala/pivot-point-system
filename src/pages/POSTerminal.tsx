@@ -12,10 +12,11 @@ import { CustomerModal } from '@/components/pos/CustomerModal';
 import { BarcodeScanner } from '@/components/pos/BarcodeScanner';
 import { OfflineIndicator } from '@/components/pos/OfflineIndicator';
 import { ThermalReceipt, printReceipt } from '@/components/pos/ThermalReceipt';
-import { PinAuthModal } from '@/components/pos/PinAuthModal';
 import { RefundModal } from '@/components/pos/RefundModal';
 import { useOfflineSync } from '@/hooks/useOfflineSync';
+import { useAuth } from '@/hooks/useAuth';
 import { categories, products } from '@/data/mockData';
+import { staffMembers } from '@/data/staffData';
 import { CartItem, Product, Customer, PaymentMethod, StaffMember } from '@/types/pos';
 import { toast } from 'sonner';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -31,9 +32,15 @@ interface HeldBill {
 }
 
 const POSTerminal = () => {
-  // Staff auth state
-  const [currentStaff, setCurrentStaff] = useState<StaffMember | undefined>();
-  const [isPinModalOpen, setIsPinModalOpen] = useState(true); // Show on load
+  // Staff from auth context - map role to staff member
+  const { user } = useAuth();
+  const [currentStaff, setCurrentStaff] = useState<StaffMember | undefined>(() => {
+    if (!user) return undefined;
+    // Map auth role to a staff member
+    const roleMap: Record<string, string> = { cashier: '1234', manager: '5678', super_admin: '0000', owner: '0000' };
+    const pin = roleMap[user.role] || '1234';
+    return staffMembers.find(s => s.pin === pin);
+  });
   const [isRefundModalOpen, setIsRefundModalOpen] = useState(false);
 
   // Core state
@@ -337,24 +344,18 @@ const POSTerminal = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleHoldBill, handleRecallBill, handleClearCart, handleCheckout, cartItems.length]);
 
-  // Staff login handler
-  const handleStaffLogin = useCallback((staff: StaffMember) => {
-    setCurrentStaff(staff);
-    setIsPinModalOpen(false);
-    toast.success(`Welcome, ${staff.name} (${staff.role})`);
-  }, []);
-
-  // If not authenticated, show PIN modal
+  // If not authenticated, redirect
   if (!currentStaff) {
     return (
-      <PinAuthModal
-        isOpen={true}
-        onClose={() => {}}
-        onAuthenticate={handleStaffLogin}
-        actionLabel="Staff Sign In"
-      />
+      <div className="h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <p className="text-muted-foreground mb-4">Please log in first</p>
+          <Button onClick={() => window.location.href = '/login'}>Go to Login</Button>
+        </div>
+      </div>
     );
   }
+
 
   return (
     <div className="h-screen bg-background flex flex-col overflow-hidden">
