@@ -21,10 +21,6 @@ const Dashboard = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!user) navigate('/login');
-  }, [user, navigate]);
-
   if (!user) return null;
 
   const allowed = roleModules[user.role];
