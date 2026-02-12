@@ -13,7 +13,9 @@ import { BarcodeScanner } from '@/components/pos/BarcodeScanner';
 import { OfflineIndicator } from '@/components/pos/OfflineIndicator';
 import { ThermalReceipt, printReceipt } from '@/components/pos/ThermalReceipt';
 import { RefundModal } from '@/components/pos/RefundModal';
+import { PinAuthModal } from '@/components/pos/PinAuthModal';
 import { useOfflineSync } from '@/hooks/useOfflineSync';
+import { addAuditEntry } from '@/data/auditLog';
 import { useAuth } from '@/hooks/useAuth';
 import { categories, products } from '@/data/mockData';
 import { staffMembers } from '@/data/staffData';
@@ -42,6 +44,8 @@ const POSTerminal = () => {
     return staffMembers.find(s => s.pin === pin);
   });
   const [isRefundModalOpen, setIsRefundModalOpen] = useState(false);
+  const [isManagerPinOpen, setIsManagerPinOpen] = useState(false);
+  const [pendingOverrideCallback, setPendingOverrideCallback] = useState<(() => void) | null>(null);
 
   // Core state
   const [selectedCategory, setSelectedCategory] = useState('1');
@@ -212,8 +216,9 @@ const POSTerminal = () => {
     setCartItems([]);
     setSelectedCustomer(undefined);
     setGlobalDiscount(0);
+    if (currentStaff) addAuditEntry(currentStaff.id, currentStaff.name, 'CART_CLEARED', `Cleared cart with ${cartItems.length} items`);
     toast.info('Cart cleared');
-  }, [cartItems.length]);
+  }, [cartItems.length, currentStaff]);
 
   // Hold bill
   const handleHoldBill = useCallback(() => {
@@ -234,6 +239,7 @@ const POSTerminal = () => {
     setCartItems([]);
     setSelectedCustomer(undefined);
     setGlobalDiscount(0);
+    if (currentStaff) addAuditEntry(currentStaff.id, currentStaff.name, 'BILL_HELD', `Held bill ${heldBill.id} with ${cartItems.length} items`);
     toast.success(`Bill held (${heldBill.id})`);
   }, [cartItems, selectedCustomer, globalDiscount]);
 
@@ -249,6 +255,7 @@ const POSTerminal = () => {
     setSelectedCustomer(lastHeld.customer);
     setGlobalDiscount(lastHeld.globalDiscount);
     setHeldBills(prev => prev.slice(0, -1));
+    if (currentStaff) addAuditEntry(currentStaff.id, currentStaff.name, 'BILL_RECALLED', `Recalled bill ${lastHeld.id}`);
     toast.success(`Bill ${lastHeld.id} recalled`);
   }, [heldBills]);
 
@@ -280,12 +287,16 @@ const POSTerminal = () => {
 
     setLastTransaction(txData);
 
+    // Audit log
+    if (currentStaff) addAuditEntry(currentStaff.id, currentStaff.name, 'TRANSACTION_COMPLETED', 
+      `${method} payment: $${total.toFixed(2)} (${cartItems.length} items)`, transactionId);
+
     // Save to IndexedDB for offline support
     saveTransaction(txData);
     
     setIsPaymentModalOpen(false);
     setIsReceiptOpen(true);
-  }, [cartItems, subtotal, taxAmount, totalDiscount, total, selectedCustomer, saveTransaction]);
+  }, [cartItems, subtotal, taxAmount, totalDiscount, total, selectedCustomer, saveTransaction, currentStaff]);
 
   // Handle new sale after receipt
   const handleNewSale = useCallback(() => {
@@ -302,6 +313,22 @@ const POSTerminal = () => {
     printReceipt('receipt-printable', 'thermal');
     toast.success('Printing receipt...');
   }, []);
+
+  // Manager override for discount
+  const handleManagerOverrideNeeded = useCallback((callback: () => void) => {
+    setPendingOverrideCallback(() => callback);
+    setIsManagerPinOpen(true);
+  }, []);
+
+  const handleManagerAuthenticated = useCallback((staff: StaffMember) => {
+    setIsManagerPinOpen(false);
+    if (currentStaff) addAuditEntry(staff.id, staff.name, 'DISCOUNT_OVERRIDE', 
+      `Manager ${staff.name} approved discount override for ${currentStaff.name}`);
+    if (pendingOverrideCallback) {
+      pendingOverrideCallback();
+      setPendingOverrideCallback(null);
+    }
+  }, [pendingOverrideCallback, currentStaff]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -421,6 +448,8 @@ const POSTerminal = () => {
             onSelectCustomer={() => setIsCustomerModalOpen(true)}
             globalDiscount={globalDiscount}
             onGlobalDiscountChange={setGlobalDiscount}
+            currentStaff={currentStaff}
+            onManagerOverrideNeeded={handleManagerOverrideNeeded}
           />
         </motion.aside>
       </div>
@@ -476,6 +505,8 @@ const POSTerminal = () => {
               }}
               globalDiscount={globalDiscount}
               onGlobalDiscountChange={setGlobalDiscount}
+              currentStaff={currentStaff}
+              onManagerOverrideNeeded={handleManagerOverrideNeeded}
             />
           </SheetContent>
         </Sheet>
@@ -549,6 +580,15 @@ const POSTerminal = () => {
         isOpen={isRefundModalOpen}
         onClose={() => setIsRefundModalOpen(false)}
         currentStaff={currentStaff}
+      />
+
+      {/* Manager Override PIN */}
+      <PinAuthModal
+        isOpen={isManagerPinOpen}
+        onClose={() => { setIsManagerPinOpen(false); setPendingOverrideCallback(null); }}
+        onAuthenticate={handleManagerAuthenticated}
+        requiredRole="manager"
+        actionLabel="Manager Approval"
       />
     </div>
   );

@@ -1,29 +1,18 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Minus, 
-  Plus, 
-  Trash2, 
-  ShoppingCart, 
-  User, 
-  Tag, 
-  Percent,
-  MessageSquare,
-  ChevronDown,
-  ChevronUp,
-  X,
-  Gift
+  Minus, Plus, Trash2, ShoppingCart, User, Tag, Percent,
+  MessageSquare, ChevronDown, ChevronUp, X, Gift
 } from 'lucide-react';
-import { CartItem, Customer } from '@/types/pos';
+import { CartItem, Customer, StaffMember } from '@/types/pos';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { 
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger 
+  Collapsible, CollapsibleContent, CollapsibleTrigger 
 } from '@/components/ui/collapsible';
+import { toast } from 'sonner';
 
 interface EnhancedCartProps {
   items: CartItem[];
@@ -36,6 +25,8 @@ interface EnhancedCartProps {
   onSelectCustomer: () => void;
   globalDiscount: number;
   onGlobalDiscountChange: (discount: number) => void;
+  currentStaff?: StaffMember;
+  onManagerOverrideNeeded?: (callback: () => void) => void;
 }
 
 export const EnhancedCart = ({
@@ -49,6 +40,8 @@ export const EnhancedCart = ({
   onSelectCustomer,
   globalDiscount,
   onGlobalDiscountChange,
+  currentStaff,
+  onManagerOverrideNeeded,
 }: EnhancedCartProps) => {
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const [discountInput, setDiscountInput] = useState('');
@@ -70,6 +63,27 @@ export const EnhancedCart = ({
   const handleApplyGlobalDiscount = () => {
     const discount = parseFloat(discountInput);
     if (!isNaN(discount) && discount > 0) {
+      // Check discount limit
+      if (currentStaff && subtotal > 0) {
+        const discountPercent = (discount / subtotal) * 100;
+        if (discountPercent > currentStaff.permissions.maxDiscountPercent) {
+          if (!currentStaff.permissions.canApplyDiscount) {
+            toast.error('You do not have permission to apply discounts');
+            return;
+          }
+          // Need manager override
+          if (onManagerOverrideNeeded) {
+            onManagerOverrideNeeded(() => {
+              onGlobalDiscountChange(discount);
+              setDiscountInput('');
+              toast.success(`Discount $${discount.toFixed(2)} applied with manager approval`);
+            });
+            return;
+          }
+          toast.error(`Discount exceeds your ${currentStaff.permissions.maxDiscountPercent}% limit. Manager override required.`);
+          return;
+        }
+      }
       onGlobalDiscountChange(discount);
       setDiscountInput('');
     }
