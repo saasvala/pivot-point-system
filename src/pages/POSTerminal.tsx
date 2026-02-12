@@ -344,17 +344,8 @@ const POSTerminal = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleHoldBill, handleRecallBill, handleClearCart, handleCheckout, cartItems.length]);
 
-  // If not authenticated, redirect
-  if (!currentStaff) {
-    return (
-      <div className="h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <p className="text-muted-foreground mb-4">Please log in first</p>
-          <Button onClick={() => window.location.href = '/login'}>Go to Login</Button>
-        </div>
-      </div>
-    );
-  }
+  // If staff not resolved (shouldn't happen with ProtectedRoute), fallback
+  if (!currentStaff) return null;
 
 
   return (
