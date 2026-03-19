@@ -11,7 +11,7 @@ const allMenuItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
   { id: 'billing', label: 'POS Terminal', icon: Store, path: '/pos' },
   { id: 'products', label: 'Products', icon: Package, path: '/dashboard' },
-  { id: 'inventory', label: 'Inventory', icon: Receipt, path: '/dashboard' },
+  { id: 'inventory', label: 'Inventory', icon: Receipt, path: '/inventory' },
   { id: 'customers', label: 'Customers', icon: Users, path: '/dashboard' },
   { id: 'reports', label: 'Audit Log', icon: BarChart3, path: '/audit-log' },
   { id: 'settings', label: 'Settings', icon: Settings, path: '/dashboard' },
