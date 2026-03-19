@@ -94,9 +94,9 @@ const Dashboard = () => {
             </Link>
           )}
           {allowed.includes('inventory') && (
-            <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
+            <Link to="/inventory" className="flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
               <Package className="w-5 h-5" /> Inventory
-            </a>
+            </Link>
           )}
           {allowed.includes('products') && (
             <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
