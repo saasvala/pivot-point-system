@@ -157,6 +157,9 @@ const Dashboard = () => {
         {/* Dashboard Content */}
         <div className="p-4 md:p-6">
           <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-4 md:space-y-6">
+            {/* Live Sales Widgets */}
+            <LiveSalesWidgets />
+
             {/* Stats Grid */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
               {stats.map((stat) => (

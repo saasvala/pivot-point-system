@@ -32,6 +32,7 @@ const App = () => (
               <Route path="/pos" element={<ProtectedRoute><POSTerminal /></ProtectedRoute>} />
               <Route path="/staff" element={<ProtectedRoute allowedRoles={['super_admin', 'owner']}><StaffManagement /></ProtectedRoute>} />
               <Route path="/audit-log" element={<ProtectedRoute allowedRoles={['super_admin', 'owner', 'manager']}><AuditLog /></ProtectedRoute>} />
+              <Route path="/inventory" element={<ProtectedRoute allowedRoles={['super_admin', 'owner', 'manager']}><Inventory /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AuthProvider>
