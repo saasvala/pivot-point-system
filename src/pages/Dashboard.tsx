@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { MobileBottomNav } from '@/components/dashboard/MobileBottomNav';
 import { MobileDrawer } from '@/components/dashboard/MobileDrawer';
+import { LiveSalesWidgets } from '@/components/dashboard/LiveSalesWidgets';
 import { useAuth, roleModules, roleMeta } from '@/hooks/useAuth';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -93,9 +94,9 @@ const Dashboard = () => {
             </Link>
           )}
           {allowed.includes('inventory') && (
-            <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
+            <Link to="/inventory" className="flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
               <Package className="w-5 h-5" /> Inventory
-            </a>
+            </Link>
           )}
           {allowed.includes('products') && (
             <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
@@ -156,6 +157,9 @@ const Dashboard = () => {
         {/* Dashboard Content */}
         <div className="p-4 md:p-6">
           <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-4 md:space-y-6">
+            {/* Live Sales Widgets */}
+            <LiveSalesWidgets />
+
             {/* Stats Grid */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
               {stats.map((stat) => (

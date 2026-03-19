@@ -5,7 +5,7 @@ import { useAuth, roleModules } from '@/hooks/useAuth';
 const allNavItems = [
   { id: 'billing', label: 'Billing', icon: Store, path: '/pos' },
   { id: 'products', label: 'Products', icon: Package, path: '/dashboard' },
-  { id: 'customers', label: 'Customers', icon: Users, path: '/dashboard' },
+  { id: 'inventory', label: 'Inventory', icon: Package, path: '/inventory' },
   { id: 'reports', label: 'Reports', icon: BarChart3, path: '/dashboard' },
   { id: 'settings', label: 'Settings', icon: Settings, path: '/dashboard' },
 ];

@@ -16,6 +16,7 @@ import { RefundModal } from '@/components/pos/RefundModal';
 import { PinAuthModal } from '@/components/pos/PinAuthModal';
 import { useOfflineSync } from '@/hooks/useOfflineSync';
 import { addAuditEntry } from '@/data/auditLog';
+import { addTransaction as addToSalesStore } from '@/data/salesStore';
 import { useAuth } from '@/hooks/useAuth';
 import { categories, products } from '@/data/mockData';
 import { staffMembers } from '@/data/staffData';
@@ -286,6 +287,22 @@ const POSTerminal = () => {
     };
 
     setLastTransaction(txData);
+
+    // Push to real-time sales store
+    addToSalesStore({
+      id: transactionId,
+      items: [...cartItems],
+      subtotal,
+      tax: taxAmount,
+      discount: totalDiscount,
+      total,
+      amountPaid,
+      change,
+      paymentMethod: method,
+      customer: selectedCustomer,
+      createdAt: new Date(),
+      status: 'completed',
+    });
 
     // Audit log
     if (currentStaff) addAuditEntry(currentStaff.id, currentStaff.name, 'TRANSACTION_COMPLETED', 
