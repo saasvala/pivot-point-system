@@ -16,6 +16,7 @@ import { RefundModal } from '@/components/pos/RefundModal';
 import { PinAuthModal } from '@/components/pos/PinAuthModal';
 import { useOfflineSync } from '@/hooks/useOfflineSync';
 import { addAuditEntry } from '@/data/auditLog';
+import { addTransaction as addToSalesStore } from '@/data/salesStore';
 import { useAuth } from '@/hooks/useAuth';
 import { categories, products } from '@/data/mockData';
 import { staffMembers } from '@/data/staffData';
