@@ -13,7 +13,7 @@ const allMenuItems = [
   { id: 'products', label: 'Products', icon: Package, path: '/dashboard' },
   { id: 'inventory', label: 'Inventory', icon: Receipt, path: '/dashboard' },
   { id: 'customers', label: 'Customers', icon: Users, path: '/dashboard' },
-  { id: 'reports', label: 'Reports', icon: BarChart3, path: '/dashboard' },
+  { id: 'reports', label: 'Audit Log', icon: BarChart3, path: '/audit-log' },
   { id: 'settings', label: 'Settings', icon: Settings, path: '/dashboard' },
   { id: 'staff', label: 'Staff', icon: UserCircle, path: '/dashboard' },
 ];
