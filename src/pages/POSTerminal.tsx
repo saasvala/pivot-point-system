@@ -288,6 +288,22 @@ const POSTerminal = () => {
 
     setLastTransaction(txData);
 
+    // Push to real-time sales store
+    addToSalesStore({
+      id: transactionId,
+      items: [...cartItems],
+      subtotal,
+      tax: taxAmount,
+      discount: totalDiscount,
+      total,
+      amountPaid,
+      change,
+      paymentMethod: method,
+      customer: selectedCustomer,
+      createdAt: new Date(),
+      status: 'completed',
+    });
+
     // Audit log
     if (currentStaff) addAuditEntry(currentStaff.id, currentStaff.name, 'TRANSACTION_COMPLETED', 
       `${method} payment: $${total.toFixed(2)} (${cartItems.length} items)`, transactionId);
