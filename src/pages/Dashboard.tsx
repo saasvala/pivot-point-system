@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { MobileBottomNav } from '@/components/dashboard/MobileBottomNav';
 import { MobileDrawer } from '@/components/dashboard/MobileDrawer';
+import { LiveSalesWidgets } from '@/components/dashboard/LiveSalesWidgets';
 import { useAuth, roleModules, roleMeta } from '@/hooks/useAuth';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
