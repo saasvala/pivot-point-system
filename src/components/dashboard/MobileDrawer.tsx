@@ -10,12 +10,11 @@ import { useAuth, roleModules, roleMeta } from '@/hooks/useAuth';
 const allMenuItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
   { id: 'billing', label: 'POS Terminal', icon: Store, path: '/pos' },
-  { id: 'products', label: 'Products', icon: Package, path: '/dashboard' },
   { id: 'inventory', label: 'Inventory', icon: Receipt, path: '/inventory' },
-  { id: 'customers', label: 'Customers', icon: Users, path: '/dashboard' },
-  { id: 'reports', label: 'Audit Log', icon: BarChart3, path: '/audit-log' },
+  { id: 'customers', label: 'Customers', icon: Users, path: '/customers' },
+  { id: 'reports', label: 'Reports', icon: BarChart3, path: '/reports' },
   { id: 'settings', label: 'Settings', icon: Settings, path: '/dashboard' },
-  { id: 'staff', label: 'Staff', icon: UserCircle, path: '/dashboard' },
+  { id: 'staff', label: 'Staff', icon: UserCircle, path: '/staff' },
 ];
 
 export const MobileDrawer = () => {
