@@ -310,6 +310,13 @@ const Reports = () => {
                 </PopoverContent>
               </Popover>
             </div>
+            <Select value={branchScope} onValueChange={(v) => setBranchScope(v as 'active' | 'all')}>
+              <SelectTrigger className="sm:w-[160px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="active">Active branch</SelectItem>
+                <SelectItem value="all">All branches</SelectItem>
+              </SelectContent>
+            </Select>
           </CardContent>
         </Card>
 
