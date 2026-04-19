@@ -1,32 +1,45 @@
 import { Transaction } from '@/types/pos';
 import { completedTransactions } from '@/data/staffData';
+import { getBranches, getActiveBranchId } from '@/data/branchStore';
+
+// Distribute seed transactions across branches for realistic demo
+const seedBranches = getBranches();
+const seedWithBranches: Transaction[] = completedTransactions.map((t, i) => ({
+  ...t,
+  branchId: seedBranches[i % seedBranches.length]?.id,
+}));
 
 // Reactive in-memory sales store
-let transactions: Transaction[] = [...completedTransactions];
+let transactions: Transaction[] = [...seedWithBranches];
 let listeners: (() => void)[] = [];
 
 export function addTransaction(txn: Transaction) {
-  transactions = [txn, ...transactions];
+  // Auto-tag with active branch if not specified
+  const tagged: Transaction = { ...txn, branchId: txn.branchId || getActiveBranchId() };
+  transactions = [tagged, ...transactions];
   listeners.forEach((fn) => fn());
 }
 
-export function getTransactions(): Transaction[] {
-  return transactions;
+export function getTransactions(branchId?: string): Transaction[] {
+  if (!branchId) return transactions;
+  return transactions.filter((t) => t.branchId === branchId);
 }
 
-export function getTodayStats() {
+export function getTodayStats(branchId?: string) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   const todayTxns = transactions.filter(
-    (t) => t.status === 'completed' && new Date(t.createdAt) >= today
+    (t) =>
+      t.status === 'completed' &&
+      new Date(t.createdAt) >= today &&
+      (!branchId || t.branchId === branchId)
   );
 
   const revenue = todayTxns.reduce((sum, t) => sum + t.total, 0);
   const count = todayTxns.length;
   const avg = count > 0 ? revenue / count : 0;
 
-  // Top items
   const itemCounts: Record<string, { name: string; count: number; revenue: number }> = {};
   todayTxns.forEach((t) =>
     t.items.forEach((item) => {
@@ -54,6 +67,5 @@ export function subscribe(listener: () => void) {
 }
 
 export function useSalesStore() {
-  // Hook-compatible - components can call getTodayStats() and subscribe
   return { getTodayStats, getTransactions, subscribe, addTransaction };
 }

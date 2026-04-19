@@ -56,6 +56,7 @@ export interface Transaction {
   customer?: Customer;
   createdAt: Date;
   status: 'completed' | 'pending' | 'refunded' | 'voided' | 'partial-refund';
+  branchId?: string;
 }
 
 export type PaymentMethod = 'cash' | 'card' | 'upi' | 'wallet' | 'split' | 'credit';

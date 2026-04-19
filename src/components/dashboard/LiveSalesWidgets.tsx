@@ -1,19 +1,17 @@
-import { useState, useEffect, useSyncExternalStore } from 'react';
+import { useSyncExternalStore } from 'react';
 import { motion } from 'framer-motion';
 import { DollarSign, ShoppingCart, TrendingUp, Zap } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { getTodayStats, subscribe, getTransactions } from '@/data/salesStore';
-
-const useStoreSnapshot = () => {
-  return useSyncExternalStore(
-    subscribe,
-    () => JSON.stringify(getTodayStats()),
-  );
-};
+import { getTodayStats, subscribe } from '@/data/salesStore';
+import { useBranches } from '@/data/branchStore';
 
 export const LiveSalesWidgets = () => {
-  const snapshot = useStoreSnapshot();
-  const stats = JSON.parse(snapshot);
+  const { activeBranchId, activeBranch } = useBranches();
+  const snapshot = useSyncExternalStore(
+    subscribe,
+    () => `${activeBranchId}|${JSON.stringify(getTodayStats(activeBranchId))}`
+  );
+  const stats = JSON.parse(snapshot.split('|').slice(1).join('|'));
 
   const widgets = [
     {
@@ -51,6 +49,9 @@ export const LiveSalesWidgets = () => {
           <span className="text-xs font-medium text-success">Live</span>
         </div>
         <h3 className="text-sm font-semibold text-foreground">Real-Time Sales</h3>
+        {activeBranch && (
+          <span className="text-xs text-muted-foreground ml-auto truncate">· {activeBranch.name}</span>
+        )}
       </div>
 
       {/* Stat cards */}

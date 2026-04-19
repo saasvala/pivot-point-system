@@ -18,7 +18,9 @@ import { useOfflineSync } from '@/hooks/useOfflineSync';
 import { addAuditEntry } from '@/data/auditLog';
 import { addTransaction as addToSalesStore } from '@/data/salesStore';
 import { useAuth } from '@/hooks/useAuth';
-import { categories, products } from '@/data/mockData';
+import { categories } from '@/data/mockData';
+import { useBranches } from '@/data/branchStore';
+import { useBranchProducts, adjustStock } from '@/data/branchStockStore';
 import { staffMembers } from '@/data/staffData';
 import { CartItem, Product, Customer, PaymentMethod, StaffMember } from '@/types/pos';
 import { toast } from 'sonner';
@@ -37,6 +39,8 @@ interface HeldBill {
 const POSTerminal = () => {
   // Staff from auth context - map role to staff member
   const { user } = useAuth();
+  const { activeBranchId } = useBranches();
+  const products = useBranchProducts(activeBranchId);
   const [currentStaff, setCurrentStaff] = useState<StaffMember | undefined>(() => {
     if (!user) return undefined;
     // Map auth role to a staff member
@@ -125,7 +129,7 @@ const POSTerminal = () => {
     }
     
     return filtered;
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, searchQuery, products]);
 
   // Get cart product IDs for highlighting
   const cartProductIds = useMemo(() => 
@@ -288,7 +292,7 @@ const POSTerminal = () => {
 
     setLastTransaction(txData);
 
-    // Push to real-time sales store
+    // Push to real-time sales store (tagged with active branch)
     addToSalesStore({
       id: transactionId,
       items: [...cartItems],
@@ -302,18 +306,24 @@ const POSTerminal = () => {
       customer: selectedCustomer,
       createdAt: new Date(),
       status: 'completed',
+      branchId: activeBranchId,
+    });
+
+    // Decrement stock for the active branch
+    cartItems.forEach((item) => {
+      adjustStock(activeBranchId, item.product.id, -item.quantity);
     });
 
     // Audit log
     if (currentStaff) addAuditEntry(currentStaff.id, currentStaff.name, 'TRANSACTION_COMPLETED', 
-      `${method} payment: $${total.toFixed(2)} (${cartItems.length} items)`, transactionId);
+      `${method} payment: $${total.toFixed(2)} (${cartItems.length} items) @ branch ${activeBranchId}`, transactionId);
 
     // Save to IndexedDB for offline support
     saveTransaction(txData);
     
     setIsPaymentModalOpen(false);
     setIsReceiptOpen(true);
-  }, [cartItems, subtotal, taxAmount, totalDiscount, total, selectedCustomer, saveTransaction, currentStaff]);
+  }, [cartItems, subtotal, taxAmount, totalDiscount, total, selectedCustomer, saveTransaction, currentStaff, activeBranchId]);
 
   // Handle new sale after receipt
   const handleNewSale = useCallback(() => {

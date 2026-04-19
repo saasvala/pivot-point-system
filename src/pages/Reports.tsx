@@ -20,8 +20,10 @@ import {
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { MobileDrawer } from '@/components/dashboard/MobileDrawer';
 import { MobileBottomNav } from '@/components/dashboard/MobileBottomNav';
+import { BranchSwitcher } from '@/components/branches/BranchSwitcher';
 import { useAuth } from '@/hooks/useAuth';
 import { getTransactions, subscribe } from '@/data/salesStore';
+import { useBranches } from '@/data/branchStore';
 import { staffMembers } from '@/data/staffData';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -44,7 +46,13 @@ type Preset = 'today' | '7d' | '30d' | 'custom';
 const Reports = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const transactions = useSyncExternalStore(subscribe, getTransactions, getTransactions);
+  const { activeBranchId, activeBranch } = useBranches();
+  const allTransactions = useSyncExternalStore(subscribe, getTransactions, getTransactions);
+  const [branchScope, setBranchScope] = useState<'active' | 'all'>('active');
+  const transactions = useMemo(
+    () => (branchScope === 'all' ? allTransactions : allTransactions.filter((t) => t.branchId === activeBranchId)),
+    [allTransactions, activeBranchId, branchScope]
+  );
 
   const [preset, setPreset] = useState<Preset>('7d');
   const [from, setFrom] = useState<Date>(() => {
@@ -236,15 +244,18 @@ const Reports = () => {
             </Button>
             <div className="min-w-0">
               <h1 className="text-lg md:text-2xl font-bold truncate">Reports</h1>
-              <p className="text-xs text-muted-foreground hidden sm:block">Sales analytics & performance</p>
+              <p className="text-xs text-muted-foreground hidden sm:block truncate">
+                {branchScope === 'all' ? 'All branches' : activeBranch?.name || 'No branch'}
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <BranchSwitcher />
             <Button variant="outline" size="sm" onClick={exportCSV} className="gap-1.5">
-              <Download className="w-4 h-4" /> <span className="hidden sm:inline">CSV</span>
+              <Download className="w-4 h-4" /> <span className="hidden lg:inline">CSV</span>
             </Button>
             <Button variant="outline" size="sm" onClick={exportPDF} className="gap-1.5">
-              <FileDown className="w-4 h-4" /> <span className="hidden sm:inline">PDF</span>
+              <FileDown className="w-4 h-4" /> <span className="hidden lg:inline">PDF</span>
             </Button>
             <ThemeToggle />
           </div>
@@ -299,6 +310,13 @@ const Reports = () => {
                 </PopoverContent>
               </Popover>
             </div>
+            <Select value={branchScope} onValueChange={(v) => setBranchScope(v as 'active' | 'all')}>
+              <SelectTrigger className="sm:w-[160px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="active">Active branch</SelectItem>
+                <SelectItem value="all">All branches</SelectItem>
+              </SelectContent>
+            </Select>
           </CardContent>
         </Card>
 

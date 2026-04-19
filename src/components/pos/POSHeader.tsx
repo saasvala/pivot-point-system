@@ -21,6 +21,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useState, useEffect } from 'react';
+import { BranchSwitcher } from '@/components/branches/BranchSwitcher';
+import { useBranches } from '@/data/branchStore';
 
 interface POSHeaderProps {
   businessName: string;
@@ -32,6 +34,8 @@ interface POSHeaderProps {
 export const POSHeader = ({ businessName, branchName, cashierName, onMenuClick }: POSHeaderProps) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const { activeBranch } = useBranches();
+  const displayBranch = activeBranch?.name || branchName;
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -68,7 +72,7 @@ export const POSHeader = ({ businessName, branchName, cashierName, onMenuClick }
             </div>
             <div>
               <h1 className="font-semibold text-foreground">{businessName}</h1>
-              <p className="text-xs text-muted-foreground">{branchName}</p>
+              <p className="text-xs text-muted-foreground">{displayBranch}</p>
             </div>
           </div>
         </div>
@@ -86,6 +90,7 @@ export const POSHeader = ({ businessName, branchName, cashierName, onMenuClick }
 
         {/* Right Section */}
         <div className="flex items-center gap-2">
+          <BranchSwitcher />
           {/* Status Indicators */}
           <div className="hidden sm:flex items-center gap-2 mr-2">
             {isOnline ? (

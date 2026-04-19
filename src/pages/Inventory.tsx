@@ -23,7 +23,10 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import { MobileDrawer } from '@/components/dashboard/MobileDrawer';
 import { MobileBottomNav } from '@/components/dashboard/MobileBottomNav';
 import { useAuth } from '@/hooks/useAuth';
-import { products as initialProducts, categories } from '@/data/mockData';
+import { categories } from '@/data/mockData';
+import { useBranches } from '@/data/branchStore';
+import { useBranchProducts, adjustStock } from '@/data/branchStockStore';
+import { BranchSwitcher } from '@/components/branches/BranchSwitcher';
 import { Product } from '@/types/pos';
 import { toast } from 'sonner';
 
@@ -32,7 +35,8 @@ const LOW_STOCK_THRESHOLD = 20;
 const Inventory = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [inventory, setInventory] = useState<Product[]>(initialProducts);
+  const { activeBranchId, activeBranch } = useBranches();
+  const inventory = useBranchProducts(activeBranchId);
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [stockFilter, setStockFilter] = useState<'all' | 'low' | 'out'>('all');
@@ -71,16 +75,10 @@ const Inventory = () => {
       return;
     }
 
-    setInventory((prev) =>
-      prev.map((p) =>
-        p.id === adjustModal.id
-          ? { ...p, stock: Math.max(0, p.stock + delta) }
-          : p
-      )
-    );
+    adjustStock(activeBranchId, adjustModal.id, delta);
 
     const action = delta > 0 ? 'Added' : 'Removed';
-    toast.success(`${action} ${Math.abs(delta)} units of ${adjustModal.name}`);
+    toast.success(`${action} ${Math.abs(delta)} units of ${adjustModal.name} at ${activeBranch?.name}`);
     setAdjustModal(null);
     setAdjustQty('');
     setAdjustReason('');
@@ -105,12 +103,13 @@ const Inventory = () => {
             </Button>
             <div className="min-w-0">
               <h1 className="text-lg md:text-2xl font-bold text-foreground truncate">Inventory</h1>
-              <p className="text-xs md:text-sm text-muted-foreground hidden sm:block">
-                {stats.total} products tracked
+              <p className="text-xs md:text-sm text-muted-foreground hidden sm:block truncate">
+                {stats.total} products · {activeBranch?.name || 'No branch'}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <BranchSwitcher />
             <ThemeToggle />
           </div>
         </div>

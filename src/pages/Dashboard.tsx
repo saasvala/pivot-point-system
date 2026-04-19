@@ -12,6 +12,7 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import { MobileBottomNav } from '@/components/dashboard/MobileBottomNav';
 import { MobileDrawer } from '@/components/dashboard/MobileDrawer';
 import { LiveSalesWidgets } from '@/components/dashboard/LiveSalesWidgets';
+import { BranchSwitcher } from '@/components/branches/BranchSwitcher';
 import { useAuth, roleModules, roleMeta } from '@/hooks/useAuth';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -113,6 +114,11 @@ const Dashboard = () => {
               <BarChart3 className="w-5 h-5" /> Reports
             </Link>
           )}
+          {(user.role === 'super_admin' || user.role === 'owner') && (
+            <Link to="/branches" className="flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
+              <Store className="w-5 h-5" /> Branches
+            </Link>
+          )}
           {allowed.includes('settings') && (
             <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
               <Settings className="w-5 h-5" /> Settings
@@ -139,7 +145,8 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" className="gap-1.5 hidden sm:flex">
+              <BranchSwitcher />
+              <Button variant="outline" size="sm" className="gap-1.5 hidden xl:flex">
                 <Calendar className="w-4 h-4" /> Today <ChevronDown className="w-3 h-3" />
               </Button>
               <Button variant="ghost" size="icon" className="relative w-9 h-9">
