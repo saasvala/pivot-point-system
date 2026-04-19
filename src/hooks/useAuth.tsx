@@ -18,8 +18,8 @@ const roleProfiles: Record<UserRole, AuthUser> = {
 };
 
 export const roleModules: Record<UserRole, string[]> = {
-  super_admin: ['billing', 'products', 'inventory', 'customers', 'reports', 'settings', 'staff'],
-  owner: ['billing', 'products', 'inventory', 'customers', 'reports', 'settings'],
+  super_admin: ['billing', 'products', 'inventory', 'customers', 'reports', 'settings', 'staff', 'branches'],
+  owner: ['billing', 'products', 'inventory', 'customers', 'reports', 'settings', 'branches'],
   manager: ['billing', 'products', 'inventory', 'customers', 'reports'],
   cashier: ['billing', 'products', 'customers'],
 };
