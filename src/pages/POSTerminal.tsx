@@ -39,6 +39,8 @@ interface HeldBill {
 const POSTerminal = () => {
   // Staff from auth context - map role to staff member
   const { user } = useAuth();
+  const { activeBranchId } = useBranches();
+  const products = useBranchProducts(activeBranchId);
   const [currentStaff, setCurrentStaff] = useState<StaffMember | undefined>(() => {
     if (!user) return undefined;
     // Map auth role to a staff member
