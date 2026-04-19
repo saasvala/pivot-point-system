@@ -59,8 +59,6 @@ const Reports = () => {
     return d;
   });
 
-  if (!user) return null;
-
   const applyPreset = (p: Preset) => {
     setPreset(p);
     const now = new Date();

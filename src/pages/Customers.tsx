@@ -40,8 +40,6 @@ const Customers = () => {
   const [viewing, setViewing] = useState<Customer | null>(null);
   const [form, setForm] = useState({ name: '', email: '', phone: '', loyaltyPoints: 0, totalSpent: 0 });
 
-  if (!user) return null;
-
   const filtered = useMemo(() => {
     if (!search) return customers;
     const q = search.toLowerCase();
@@ -64,6 +62,8 @@ const Customers = () => {
       .filter((t) => t.customer?.id === viewing.id)
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }, [transactions, viewing]);
+
+  if (!user) return null;
 
   const openAdd = () => {
     setIsNew(true);
