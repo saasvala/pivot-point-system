@@ -46,7 +46,13 @@ type Preset = 'today' | '7d' | '30d' | 'custom';
 const Reports = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const transactions = useSyncExternalStore(subscribe, getTransactions, getTransactions);
+  const { activeBranchId, activeBranch } = useBranches();
+  const allTransactions = useSyncExternalStore(subscribe, getTransactions, getTransactions);
+  const [branchScope, setBranchScope] = useState<'active' | 'all'>('active');
+  const transactions = useMemo(
+    () => (branchScope === 'all' ? allTransactions : allTransactions.filter((t) => t.branchId === activeBranchId)),
+    [allTransactions, activeBranchId, branchScope]
+  );
 
   const [preset, setPreset] = useState<Preset>('7d');
   const [from, setFrom] = useState<Date>(() => {
