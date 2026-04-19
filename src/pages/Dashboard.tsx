@@ -104,13 +104,13 @@ const Dashboard = () => {
             </a>
           )}
           {allowed.includes('customers') && (
-            <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
+            <Link to="/customers" className="flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
               <Users className="w-5 h-5" /> Customers
-            </a>
+            </Link>
           )}
           {allowed.includes('reports') && (
-            <Link to="/audit-log" className="flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
-              <BarChart3 className="w-5 h-5" /> Audit Log
+            <Link to="/reports" className="flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
+              <BarChart3 className="w-5 h-5" /> Reports
             </Link>
           )}
           {allowed.includes('settings') && (
