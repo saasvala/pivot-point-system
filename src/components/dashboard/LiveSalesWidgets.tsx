@@ -49,6 +49,9 @@ export const LiveSalesWidgets = () => {
           <span className="text-xs font-medium text-success">Live</span>
         </div>
         <h3 className="text-sm font-semibold text-foreground">Real-Time Sales</h3>
+        {activeBranch && (
+          <span className="text-xs text-muted-foreground ml-auto truncate">· {activeBranch.name}</span>
+        )}
       </div>
 
       {/* Stat cards */}
