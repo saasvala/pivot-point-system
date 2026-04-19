@@ -150,6 +150,8 @@ const Reports = () => {
     return staff.sort((a, b) => b.revenue - a.revenue);
   }, [filtered]);
 
+  if (!user) return null;
+
   const exportCSV = () => {
     const headers = ['Transaction ID', 'Date', 'Items', 'Subtotal', 'Tax', 'Discount', 'Total', 'Payment', 'Customer'];
     const rows = filtered.map((t) => [
