@@ -12,6 +12,7 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import { MobileBottomNav } from '@/components/dashboard/MobileBottomNav';
 import { MobileDrawer } from '@/components/dashboard/MobileDrawer';
 import { LiveSalesWidgets } from '@/components/dashboard/LiveSalesWidgets';
+import { BranchSwitcher } from '@/components/branches/BranchSwitcher';
 import { useAuth, roleModules, roleMeta } from '@/hooks/useAuth';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -139,7 +140,8 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" className="gap-1.5 hidden sm:flex">
+              <BranchSwitcher />
+              <Button variant="outline" size="sm" className="gap-1.5 hidden xl:flex">
                 <Calendar className="w-4 h-4" /> Today <ChevronDown className="w-3 h-3" />
               </Button>
               <Button variant="ghost" size="icon" className="relative w-9 h-9">
