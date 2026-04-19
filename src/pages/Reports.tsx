@@ -20,8 +20,10 @@ import {
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { MobileDrawer } from '@/components/dashboard/MobileDrawer';
 import { MobileBottomNav } from '@/components/dashboard/MobileBottomNav';
+import { BranchSwitcher } from '@/components/branches/BranchSwitcher';
 import { useAuth } from '@/hooks/useAuth';
 import { getTransactions, subscribe } from '@/data/salesStore';
+import { useBranches } from '@/data/branchStore';
 import { staffMembers } from '@/data/staffData';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
