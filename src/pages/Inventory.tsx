@@ -103,12 +103,13 @@ const Inventory = () => {
             </Button>
             <div className="min-w-0">
               <h1 className="text-lg md:text-2xl font-bold text-foreground truncate">Inventory</h1>
-              <p className="text-xs md:text-sm text-muted-foreground hidden sm:block">
-                {stats.total} products tracked
+              <p className="text-xs md:text-sm text-muted-foreground hidden sm:block truncate">
+                {stats.total} products · {activeBranch?.name || 'No branch'}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <BranchSwitcher />
             <ThemeToggle />
           </div>
         </div>
