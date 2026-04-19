@@ -114,6 +114,11 @@ const Dashboard = () => {
               <BarChart3 className="w-5 h-5" /> Reports
             </Link>
           )}
+          {(user.role === 'super_admin' || user.role === 'owner') && (
+            <Link to="/branches" className="flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
+              <Store className="w-5 h-5" /> Branches
+            </Link>
+          )}
           {allowed.includes('settings') && (
             <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
               <Settings className="w-5 h-5" /> Settings
