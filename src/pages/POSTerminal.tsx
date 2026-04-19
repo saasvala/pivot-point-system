@@ -129,7 +129,7 @@ const POSTerminal = () => {
     }
     
     return filtered;
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, searchQuery, products]);
 
   // Get cart product IDs for highlighting
   const cartProductIds = useMemo(() => 
