@@ -292,7 +292,7 @@ const POSTerminal = () => {
 
     setLastTransaction(txData);
 
-    // Push to real-time sales store
+    // Push to real-time sales store (tagged with active branch)
     addToSalesStore({
       id: transactionId,
       items: [...cartItems],
@@ -306,18 +306,24 @@ const POSTerminal = () => {
       customer: selectedCustomer,
       createdAt: new Date(),
       status: 'completed',
+      branchId: activeBranchId,
+    });
+
+    // Decrement stock for the active branch
+    cartItems.forEach((item) => {
+      adjustStock(activeBranchId, item.product.id, -item.quantity);
     });
 
     // Audit log
     if (currentStaff) addAuditEntry(currentStaff.id, currentStaff.name, 'TRANSACTION_COMPLETED', 
-      `${method} payment: $${total.toFixed(2)} (${cartItems.length} items)`, transactionId);
+      `${method} payment: $${total.toFixed(2)} (${cartItems.length} items) @ branch ${activeBranchId}`, transactionId);
 
     // Save to IndexedDB for offline support
     saveTransaction(txData);
     
     setIsPaymentModalOpen(false);
     setIsReceiptOpen(true);
-  }, [cartItems, subtotal, taxAmount, totalDiscount, total, selectedCustomer, saveTransaction, currentStaff]);
+  }, [cartItems, subtotal, taxAmount, totalDiscount, total, selectedCustomer, saveTransaction, currentStaff, activeBranchId]);
 
   // Handle new sale after receipt
   const handleNewSale = useCallback(() => {
