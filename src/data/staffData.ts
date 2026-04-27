@@ -6,6 +6,7 @@ export const staffMembers: StaffMember[] = [
     name: 'Alex Johnson',
     pin: '1234',
     role: 'cashier',
+    branchIds: ['br-mall'],
     permissions: {
       canOverridePrice: false,
       canApplyDiscount: true,
@@ -20,6 +21,7 @@ export const staffMembers: StaffMember[] = [
     name: 'Maria Garcia',
     pin: '5678',
     role: 'manager',
+    branchIds: ['br-downtown'],
     permissions: {
       canOverridePrice: true,
       canApplyDiscount: true,
@@ -34,6 +36,7 @@ export const staffMembers: StaffMember[] = [
     name: 'Admin User',
     pin: '0000',
     role: 'admin',
+    branchIds: [], // all branches
     permissions: {
       canOverridePrice: true,
       canApplyDiscount: true,

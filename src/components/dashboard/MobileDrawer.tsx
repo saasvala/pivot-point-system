@@ -14,6 +14,7 @@ const allMenuItems = [
   { id: 'customers', label: 'Customers', icon: Users, path: '/customers' },
   { id: 'reports', label: 'Reports', icon: BarChart3, path: '/reports' },
   { id: 'branches', label: 'Branches', icon: Store, path: '/branches' },
+  { id: 'branches', label: 'Multi-Branch View', icon: BarChart3, path: '/branches/overview' },
   { id: 'settings', label: 'Settings', icon: Settings, path: '/dashboard' },
   { id: 'staff', label: 'Staff', icon: UserCircle, path: '/staff' },
 ];
@@ -60,10 +61,10 @@ export const MobileDrawer = () => {
         {/* Nav items */}
         <nav className="flex-1 p-3 space-y-1 overflow-y-auto max-h-[calc(100vh-180px)]">
           {menuItems.map((item) => {
-            const isActive = location.pathname === item.path && item.id === 'dashboard';
+            const isActive = location.pathname === item.path;
             return (
               <Link
-                key={item.id}
+                key={item.path}
                 to={item.path}
                 onClick={() => setOpen(false)}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-colors touch-manipulation ${

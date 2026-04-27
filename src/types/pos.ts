@@ -69,6 +69,8 @@ export interface StaffMember {
   pin: string;
   role: StaffRole;
   permissions: StaffPermissions;
+  /** Branch IDs this staff member is assigned to. Empty = all branches. */
+  branchIds?: string[];
 }
 
 export interface StaffPermissions {

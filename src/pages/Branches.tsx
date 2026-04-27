@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import {
   ArrowLeft, Plus, Edit2, Trash2, Store, MapPin, Phone, User,
-  Building2, CheckCircle2,
+  Building2, CheckCircle2, BarChart3,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -101,6 +101,14 @@ const Branches = () => {
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => navigate('/branches/overview')}
+              className="gap-1.5"
+            >
+              <BarChart3 className="w-4 h-4" /> <span className="hidden sm:inline">Overview</span>
+            </Button>
             <Button size="sm" onClick={openAdd} className="gap-1.5">
               <Plus className="w-4 h-4" /> <span className="hidden sm:inline">Add Branch</span>
             </Button>
