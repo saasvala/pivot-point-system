@@ -1,9 +1,9 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, TrendingUp, DollarSign, ShoppingCart, AlertTriangle,
-  Package, Trophy, Building2,
+  Package, Trophy, Building2, Network, Store,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -37,10 +37,13 @@ function useReactiveSnapshot() {
   );
 }
 
+type ViewMode = 'network' | 'active';
+
 const BranchesOverview = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { branches, activeBranchId } = useBranches();
+  const { branches, activeBranchId, activeBranch } = useBranches();
+  const [view, setView] = useState<ViewMode>('network');
   useReactiveSnapshot();
 
   const perBranch = useMemo(() => {
