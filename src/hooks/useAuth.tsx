@@ -45,33 +45,46 @@ const AuthContext = createContext<AuthContextType>({
   logout: () => {},
 });
 
+const applyBranchLock = (profile: AuthUser) => {
+  if (profile.role === 'cashier') {
+    const staffRecord =
+      staffMembers.find((s) => s.role === 'cashier' && s.name === profile.name) ||
+      staffMembers.find((s) => s.role === 'cashier');
+    const assigned = staffRecord?.branchIds ?? [];
+    // Restrict the visible branch list to the cashier's assignment
+    setAllowedBranches(assigned.length ? assigned : null);
+    const all = getBranches();
+    const target = assigned.find((id) => all.some((b) => b.id === id)) || all[0]?.id;
+    if (target) setActiveBranch(target);
+  } else {
+    // Owners / admins / managers see every branch
+    setAllowedBranches(null);
+  }
+};
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(() => {
     const saved = sessionStorage.getItem('pos-auth');
     return saved ? JSON.parse(saved) : null;
   });
 
+  // Re-apply branch lock on mount (e.g. page refresh while cashier logged in)
+  useEffect(() => {
+    if (user) applyBranchLock(user);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const loginAs = useCallback((role: UserRole) => {
     const profile = roleProfiles[role];
     setUser(profile);
     sessionStorage.setItem('pos-auth', JSON.stringify(profile));
-
-    // Lock cashiers to their assigned branch on login
-    if (role === 'cashier') {
-      const staffRecord = staffMembers.find(
-        (s) => s.role === 'cashier' && s.name === profile.name
-      ) || staffMembers.find((s) => s.role === 'cashier');
-      const assigned = staffRecord?.branchIds ?? [];
-      const branches = getBranches();
-      const target = assigned.find((id) => branches.some((b) => b.id === id))
-        || branches[0]?.id;
-      if (target) setActiveBranch(target);
-    }
+    applyBranchLock(profile);
   }, []);
 
   const logout = useCallback(() => {
     setUser(null);
     sessionStorage.removeItem('pos-auth');
+    setAllowedBranches(null);
   }, []);
 
   return (
@@ -79,8 +92,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuth() {
-  return useContext(AuthContext);
 }
