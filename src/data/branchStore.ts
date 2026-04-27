@@ -64,6 +64,25 @@ export const setActiveBranch = (id: string) => {
   notify();
 };
 
+// Cashier branch-lock: when set, hooks expose only these branch IDs and
+// reject switches to other branches.
+let allowedIds: string[] | null = null;
+
+export const setAllowedBranches = (ids: string[] | null) => {
+  allowedIds = ids && ids.length ? ids : null;
+  // If currently active branch is not allowed, snap to first allowed
+  if (allowedIds && !allowedIds.includes(activeId)) {
+    const target = branches.find((b) => allowedIds!.includes(b.id))?.id;
+    if (target) {
+      activeId = target;
+      persist();
+    }
+  }
+  notify();
+};
+
+export const getAllowedBranches = (): string[] | null => allowedIds;
+
 export const addBranch = (input: Omit<Branch, 'id' | 'createdAt'>): Branch => {
   const branch: Branch = {
     ...input,
