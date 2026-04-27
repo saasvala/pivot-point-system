@@ -1,7 +1,7 @@
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { staffMembers } from '@/data/staffData';
-import { setActiveBranch, getBranches } from '@/data/branchStore';
+import { setActiveBranch, getBranches, setAllowedBranches } from '@/data/branchStore';
 
 export type UserRole = 'super_admin' | 'owner' | 'manager' | 'cashier';
 
