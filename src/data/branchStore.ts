@@ -53,12 +53,18 @@ export const subscribeBranches = (l: () => void) => {
   };
 };
 
-export const getBranches = (): Branch[] => branches;
+export const getBranches = (): Branch[] => {
+  if (allowedIds) return branches.filter((b) => allowedIds!.includes(b.id));
+  return branches;
+};
+export const getAllBranches = (): Branch[] => branches;
 export const getActiveBranchId = (): string => activeId;
 export const getActiveBranch = (): Branch | undefined => branches.find((b) => b.id === activeId);
 
 export const setActiveBranch = (id: string) => {
   if (!branches.some((b) => b.id === id)) return;
+  // Enforce cashier branch lock — silently reject switches to disallowed branches
+  if (allowedIds && !allowedIds.includes(id)) return;
   activeId = id;
   persist();
   notify();
