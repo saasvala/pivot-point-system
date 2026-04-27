@@ -210,6 +210,27 @@ const BranchesOverview = () => {
           </div>
         </div>
 
+        {/* Empty state when user wants Active branch view but none is set */}
+        {view === 'active' && !activeData && (
+          <Card className="glass-card border-dashed border-border/60">
+            <CardContent className="p-6 md:p-8 flex flex-col items-center text-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-muted/60 flex items-center justify-center">
+                <Store className="w-6 h-6 text-muted-foreground" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="font-semibold text-base">No active branch selected</h3>
+                <p className="text-sm text-muted-foreground max-w-md mx-auto">
+                  Pick a branch from the header switcher to see branch-level revenue,
+                  orders, and stock health here. Showing network totals in the meantime.
+                </p>
+              </div>
+              <Button size="sm" variant="outline" asChild>
+                <Link to="/branches">Manage branches</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Summary stats (network or active) */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 md:gap-4">
           <SummaryCard
