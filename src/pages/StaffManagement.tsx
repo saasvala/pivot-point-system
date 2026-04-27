@@ -348,6 +348,38 @@ const StaffManagement = () => {
                 </Select>
               </div>
             </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label>Branch Assignments</Label>
+                <span className="text-[10px] text-muted-foreground">
+                  {formBranchIds.length === 0 ? 'All branches' : `${formBranchIds.length} selected`}
+                </span>
+              </div>
+              <div className="space-y-1.5 max-h-32 overflow-y-auto rounded-md border border-border/50 p-2">
+                {branches.map((b) => {
+                  const checked = formBranchIds.includes(b.id);
+                  return (
+                    <label
+                      key={b.id}
+                      className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-muted/50 cursor-pointer"
+                    >
+                      <Checkbox
+                        checked={checked}
+                        onCheckedChange={(v) => {
+                          setFormBranchIds((prev) =>
+                            v ? [...prev, b.id] : prev.filter((id) => id !== b.id)
+                          );
+                        }}
+                      />
+                      <span className="text-sm flex-1 truncate">{b.name}</span>
+                    </label>
+                  );
+                })}
+              </div>
+              <p className="text-[11px] text-muted-foreground">
+                Leave empty to grant access to all branches. Cashiers will be locked to their assigned branch on login.
+              </p>
+            </div>
             <div className="space-y-3">
               <Label>Permissions</Label>
               {Object.entries(permissionLabels).map(([key, label]) => (
