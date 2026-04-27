@@ -117,10 +117,10 @@ const BranchesOverview = () => {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-background pb-20 lg:pb-0">
-      <header className="sticky top-0 z-30 glass-card border-b border-border/50 px-4 md:px-6 py-3">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3 min-w-0">
+    <div className="min-h-screen bg-background pb-20 lg:pb-0 overflow-x-hidden">
+      <header className="sticky top-0 z-30 glass-card border-b border-border/50 px-3 md:px-6 py-2.5 md:py-3">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
             <MobileDrawer />
             <Button
               variant="ghost"
@@ -131,16 +131,18 @@ const BranchesOverview = () => {
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div className="min-w-0">
-              <h1 className="text-lg md:text-2xl font-bold truncate">
+              <h1 className="text-base md:text-2xl font-bold truncate">
                 Multi-Branch Overview
               </h1>
-              <p className="text-xs text-muted-foreground hidden sm:block">
-                Side-by-side comparison across {branches.length} location{branches.length !== 1 ? 's' : ''}
+              <p className="text-[11px] text-muted-foreground hidden sm:block truncate">
+                {isActiveView
+                  ? `Viewing: ${activeBranch?.name ?? 'No branch'}`
+                  : `Side-by-side comparison across ${branches.length} location${branches.length !== 1 ? 's' : ''}`}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Button asChild size="sm" variant="outline" className="gap-1.5">
+          <div className="flex items-center gap-1.5 md:gap-2 flex-shrink-0">
+            <Button asChild size="sm" variant="outline" className="gap-1.5 hidden sm:inline-flex">
               <Link to="/branches">
                 <Building2 className="w-4 h-4" />
                 <span className="hidden sm:inline">Manage</span>
@@ -151,30 +153,71 @@ const BranchesOverview = () => {
         </div>
       </header>
 
-      <main className="p-4 md:p-6 max-w-7xl mx-auto space-y-6">
-        {/* Network totals */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+      <main className="p-3 md:p-6 max-w-7xl mx-auto space-y-4 md:space-y-6">
+        {/* View mode toggle */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div
+            role="tablist"
+            aria-label="Overview view mode"
+            className="inline-flex items-center p-1 rounded-xl bg-muted/50 border border-border/50 w-full sm:w-auto"
+          >
+            <button
+              role="tab"
+              aria-selected={!isActiveView}
+              onClick={() => setView('network')}
+              className={cn(
+                'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all',
+                !isActiveView
+                  ? 'bg-card text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              )}
+            >
+              <Network className="w-3.5 h-3.5" />
+              Network totals
+            </button>
+            <button
+              role="tab"
+              aria-selected={isActiveView}
+              onClick={() => activeData && setView('active')}
+              disabled={!activeData}
+              className={cn(
+                'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed',
+                isActiveView
+                  ? 'bg-card text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              )}
+            >
+              <Store className="w-3.5 h-3.5" />
+              <span className="truncate max-w-[140px]">
+                {activeBranch?.name ?? 'Active branch'}
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {/* Summary stats (network or active) */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 md:gap-4">
           <SummaryCard
-            label="Network Revenue"
-            value={`$${totals.revenue.toFixed(2)}`}
+            label={isActiveView ? 'Branch Revenue' : 'Network Revenue'}
+            value={`$${summary.revenue.toFixed(2)}`}
             icon={DollarSign}
             tone="text-success"
           />
           <SummaryCard
-            label="Total Orders"
-            value={totals.orders.toString()}
+            label={isActiveView ? 'Branch Orders' : 'Total Orders'}
+            value={summary.orders.toString()}
             icon={ShoppingCart}
             tone="text-primary"
           />
           <SummaryCard
             label="Low-Stock Items"
-            value={totals.lowStock.toString()}
+            value={summary.lowStock.toString()}
             icon={AlertTriangle}
             tone="text-warning"
           />
           <SummaryCard
             label="Out of Stock"
-            value={totals.outOfStock.toString()}
+            value={summary.outOfStock.toString()}
             icon={Package}
             tone="text-destructive"
           />
