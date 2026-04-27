@@ -89,7 +89,26 @@ const BranchesOverview = () => {
     );
   }, [perBranch]);
 
-  const chartData = perBranch.map((p) => ({
+  const activeData = useMemo(
+    () => perBranch.find((p) => p.branch.id === activeBranchId),
+    [perBranch, activeBranchId]
+  );
+
+  const isActiveView = view === 'active' && !!activeData;
+
+  // Summary stats swap based on view
+  const summary = isActiveView
+    ? {
+        revenue: activeData!.revenue,
+        orders: activeData!.orders,
+        lowStock: activeData!.lowStock.length,
+        outOfStock: activeData!.outOfStock.length,
+      }
+    : totals;
+
+  // Chart: full network in network mode; just active branch in active mode
+  const chartSource = isActiveView ? [activeData!] : perBranch;
+  const chartData = chartSource.map((p) => ({
     name: p.branch.name.length > 14 ? p.branch.name.slice(0, 12) + '…' : p.branch.name,
     Revenue: Math.round(p.revenue),
     Orders: p.orders,
