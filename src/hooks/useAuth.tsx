@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { staffMembers } from '@/data/staffData';
+import { setActiveBranch, getBranches } from '@/data/branchStore';
 
 export type UserRole = 'super_admin' | 'owner' | 'manager' | 'cashier';
 
@@ -53,6 +55,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const profile = roleProfiles[role];
     setUser(profile);
     sessionStorage.setItem('pos-auth', JSON.stringify(profile));
+
+    // Lock cashiers to their assigned branch on login
+    if (role === 'cashier') {
+      const staffRecord = staffMembers.find(
+        (s) => s.role === 'cashier' && s.name === profile.name
+      ) || staffMembers.find((s) => s.role === 'cashier');
+      const assigned = staffRecord?.branchIds ?? [];
+      const branches = getBranches();
+      const target = assigned.find((id) => branches.some((b) => b.id === id))
+        || branches[0]?.id;
+      if (target) setActiveBranch(target);
+    }
   }, []);
 
   const logout = useCallback(() => {
