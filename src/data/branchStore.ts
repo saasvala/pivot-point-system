@@ -53,16 +53,41 @@ export const subscribeBranches = (l: () => void) => {
   };
 };
 
-export const getBranches = (): Branch[] => branches;
+export const getBranches = (): Branch[] => {
+  if (allowedIds) return branches.filter((b) => allowedIds!.includes(b.id));
+  return branches;
+};
+export const getAllBranches = (): Branch[] => branches;
 export const getActiveBranchId = (): string => activeId;
 export const getActiveBranch = (): Branch | undefined => branches.find((b) => b.id === activeId);
 
 export const setActiveBranch = (id: string) => {
   if (!branches.some((b) => b.id === id)) return;
+  // Enforce cashier branch lock — silently reject switches to disallowed branches
+  if (allowedIds && !allowedIds.includes(id)) return;
   activeId = id;
   persist();
   notify();
 };
+
+// Cashier branch-lock: when set, hooks expose only these branch IDs and
+// reject switches to other branches.
+let allowedIds: string[] | null = null;
+
+export const setAllowedBranches = (ids: string[] | null) => {
+  allowedIds = ids && ids.length ? ids : null;
+  // If currently active branch is not allowed, snap to first allowed
+  if (allowedIds && !allowedIds.includes(activeId)) {
+    const target = branches.find((b) => allowedIds!.includes(b.id))?.id;
+    if (target) {
+      activeId = target;
+      persist();
+    }
+  }
+  notify();
+};
+
+export const getAllowedBranches = (): string[] | null => allowedIds;
 
 export const addBranch = (input: Omit<Branch, 'id' | 'createdAt'>): Branch => {
   const branch: Branch = {
@@ -91,16 +116,17 @@ export const deleteBranch = (id: string) => {
   return true;
 };
 
-// Hook for components
+// Hook for components — respects cashier branch-lock
 export const useBranches = () => {
   const snapshot = useSyncExternalStore(
     subscribeBranches,
-    () => `${activeId}|${branches.length}|${branches.map((b) => b.id + b.name).join(',')}`
+    () => `${activeId}|${(allowedIds || []).join(',')}|${branches.length}|${branches.map((b) => b.id + b.name).join(',')}`
   );
   return {
     branches: getBranches(),
     activeBranchId: getActiveBranchId(),
     activeBranch: getActiveBranch(),
+    allowedBranchIds: allowedIds,
     _snap: snapshot,
   };
 };

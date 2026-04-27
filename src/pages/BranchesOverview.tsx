@@ -39,11 +39,25 @@ function useReactiveSnapshot() {
 
 type ViewMode = 'network' | 'active';
 
+const VIEW_STORAGE_KEY = 'nexuspos-overview-view-v1';
+
 const BranchesOverview = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { branches, activeBranchId, activeBranch } = useBranches();
-  const [view, setView] = useState<ViewMode>('network');
+  const [view, setView] = useState<ViewMode>(() => {
+    try {
+      const saved = localStorage.getItem(VIEW_STORAGE_KEY);
+      return saved === 'active' ? 'active' : 'network';
+    } catch {
+      return 'network';
+    }
+  });
+  // Persist view selection across refreshes
+  const updateView = (next: ViewMode) => {
+    setView(next);
+    try { localStorage.setItem(VIEW_STORAGE_KEY, next); } catch {}
+  };
   useReactiveSnapshot();
 
   const perBranch = useMemo(() => {
@@ -164,7 +178,7 @@ const BranchesOverview = () => {
             <button
               role="tab"
               aria-selected={!isActiveView}
-              onClick={() => setView('network')}
+              onClick={() => updateView('network')}
               className={cn(
                 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all',
                 !isActiveView
@@ -178,8 +192,9 @@ const BranchesOverview = () => {
             <button
               role="tab"
               aria-selected={isActiveView}
-              onClick={() => activeData && setView('active')}
+              onClick={() => activeData && updateView('active')}
               disabled={!activeData}
+              title={!activeData ? 'Select an active branch to view branch details' : undefined}
               className={cn(
                 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed',
                 isActiveView
@@ -194,6 +209,27 @@ const BranchesOverview = () => {
             </button>
           </div>
         </div>
+
+        {/* Empty state when user wants Active branch view but none is set */}
+        {view === 'active' && !activeData && (
+          <Card className="glass-card border-dashed border-border/60">
+            <CardContent className="p-6 md:p-8 flex flex-col items-center text-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-muted/60 flex items-center justify-center">
+                <Store className="w-6 h-6 text-muted-foreground" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="font-semibold text-base">No active branch selected</h3>
+                <p className="text-sm text-muted-foreground max-w-md mx-auto">
+                  Pick a branch from the header switcher to see branch-level revenue,
+                  orders, and stock health here. Showing network totals in the meantime.
+                </p>
+              </div>
+              <Button size="sm" variant="outline" asChild>
+                <Link to="/branches">Manage branches</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Summary stats (network or active) */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 md:gap-4">
@@ -235,25 +271,33 @@ const BranchesOverview = () => {
           </CardHeader>
           <CardContent className="p-2 md:p-6 pt-0 md:pt-0">
             <div className="w-full h-[220px] md:h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData} margin={{ top: 8, right: 4, left: -24, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                  <XAxis dataKey="name" tick={{ fontSize: 10 }} interval={0} />
-                  <YAxis yAxisId="l" tick={{ fontSize: 10 }} width={36} />
-                  <YAxis yAxisId="r" orientation="right" tick={{ fontSize: 10 }} width={28} />
-                  <Tooltip
-                    contentStyle={{
-                      background: 'hsl(var(--card))',
-                      border: '1px solid hsl(var(--border))',
-                      borderRadius: '8px',
-                      fontSize: '12px',
-                    }}
-                  />
-                  <Legend wrapperStyle={{ fontSize: '11px' }} />
-                  <Bar yAxisId="l" dataKey="Revenue" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
-                  <Bar yAxisId="r" dataKey="Orders" fill="hsl(var(--secondary))" radius={[6, 6, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+              {chartData.length === 0 ? (
+                <div className="h-full flex items-center justify-center text-center px-4">
+                  <p className="text-sm text-muted-foreground">
+                    No branch data to chart yet.
+                  </p>
+                </div>
+              ) : (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={chartData} margin={{ top: 8, right: 4, left: -24, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+                    <XAxis dataKey="name" tick={{ fontSize: 10 }} interval={0} />
+                    <YAxis yAxisId="l" tick={{ fontSize: 10 }} width={36} />
+                    <YAxis yAxisId="r" orientation="right" tick={{ fontSize: 10 }} width={28} />
+                    <Tooltip
+                      contentStyle={{
+                        background: 'hsl(var(--card))',
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '8px',
+                        fontSize: '12px',
+                      }}
+                    />
+                    <Legend wrapperStyle={{ fontSize: '11px' }} />
+                    <Bar yAxisId="l" dataKey="Revenue" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
+                    <Bar yAxisId="r" dataKey="Orders" fill="hsl(var(--secondary))" radius={[6, 6, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              )}
             </div>
           </CardContent>
         </Card>
