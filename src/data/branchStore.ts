@@ -116,16 +116,17 @@ export const deleteBranch = (id: string) => {
   return true;
 };
 
-// Hook for components
+// Hook for components — respects cashier branch-lock
 export const useBranches = () => {
   const snapshot = useSyncExternalStore(
     subscribeBranches,
-    () => `${activeId}|${branches.length}|${branches.map((b) => b.id + b.name).join(',')}`
+    () => `${activeId}|${(allowedIds || []).join(',')}|${branches.length}|${branches.map((b) => b.id + b.name).join(',')}`
   );
   return {
     branches: getBranches(),
     activeBranchId: getActiveBranchId(),
     activeBranch: getActiveBranch(),
+    allowedBranchIds: allowedIds,
     _snap: snapshot,
   };
 };
