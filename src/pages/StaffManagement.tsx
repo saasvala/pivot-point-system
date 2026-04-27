@@ -26,6 +26,8 @@ import { MobileDrawer } from '@/components/dashboard/MobileDrawer';
 import { useAuth, roleModules } from '@/hooks/useAuth';
 import { staffMembers as initialStaff } from '@/data/staffData';
 import { addAuditEntry } from '@/data/auditLog';
+import { useBranches } from '@/data/branchStore';
+import { Checkbox } from '@/components/ui/checkbox';
 import { StaffMember, StaffPermissions, StaffRole } from '@/types/pos';
 import { toast } from 'sonner';
 
