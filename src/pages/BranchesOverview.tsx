@@ -178,7 +178,7 @@ const BranchesOverview = () => {
             <button
               role="tab"
               aria-selected={!isActiveView}
-              onClick={() => setView('network')}
+              onClick={() => updateView('network')}
               className={cn(
                 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all',
                 !isActiveView
@@ -192,8 +192,9 @@ const BranchesOverview = () => {
             <button
               role="tab"
               aria-selected={isActiveView}
-              onClick={() => activeData && setView('active')}
+              onClick={() => activeData && updateView('active')}
               disabled={!activeData}
+              title={!activeData ? 'Select an active branch to view branch details' : undefined}
               className={cn(
                 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed',
                 isActiveView
