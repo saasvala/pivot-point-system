@@ -224,20 +224,23 @@ const BranchesOverview = () => {
         </div>
 
         {/* Comparison chart */}
-        <Card className="glass-card border-border/50">
-          <CardHeader>
-            <CardTitle className="text-base md:text-lg flex items-center gap-2">
-              <TrendingUp className="w-4 h-4" /> Revenue & Orders by Branch
+        <Card className="glass-card border-border/50 overflow-hidden">
+          <CardHeader className="p-3 md:p-6 pb-2 md:pb-2">
+            <CardTitle className="text-sm md:text-lg flex items-center gap-2">
+              <TrendingUp className="w-4 h-4 flex-shrink-0" />
+              <span className="truncate">
+                {isActiveView ? 'Revenue & Orders — Active Branch' : 'Revenue & Orders by Branch'}
+              </span>
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="w-full h-[260px] md:h-[300px]">
+          <CardContent className="p-2 md:p-6 pt-0 md:pt-0">
+            <div className="w-full h-[220px] md:h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
+                <BarChart data={chartData} margin={{ top: 8, right: 4, left: -24, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                  <XAxis dataKey="name" tick={{ fontSize: 11 }} />
-                  <YAxis yAxisId="l" tick={{ fontSize: 11 }} />
-                  <YAxis yAxisId="r" orientation="right" tick={{ fontSize: 11 }} />
+                  <XAxis dataKey="name" tick={{ fontSize: 10 }} interval={0} />
+                  <YAxis yAxisId="l" tick={{ fontSize: 10 }} width={36} />
+                  <YAxis yAxisId="r" orientation="right" tick={{ fontSize: 10 }} width={28} />
                   <Tooltip
                     contentStyle={{
                       background: 'hsl(var(--card))',
@@ -246,7 +249,7 @@ const BranchesOverview = () => {
                       fontSize: '12px',
                     }}
                   />
-                  <Legend wrapperStyle={{ fontSize: '12px' }} />
+                  <Legend wrapperStyle={{ fontSize: '11px' }} />
                   <Bar yAxisId="l" dataKey="Revenue" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
                   <Bar yAxisId="r" dataKey="Orders" fill="hsl(var(--secondary))" radius={[6, 6, 0, 0]} />
                 </BarChart>
@@ -256,8 +259,8 @@ const BranchesOverview = () => {
         </Card>
 
         {/* Per-branch detail cards */}
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {perBranch.map((p) => {
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-4">
+          {(isActiveView ? [activeData!] : perBranch).map((p) => {
             const isActive = p.branch.id === activeBranchId;
             return (
               <motion.div
