@@ -57,6 +57,7 @@ const defaultPermissions: StaffPermissions = {
 const StaffManagement = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { branches } = useBranches();
   const [staff, setStaff] = useState<StaffMember[]>(initialStaff);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingStaff, setEditingStaff] = useState<StaffMember | null>(null);
@@ -67,6 +68,7 @@ const StaffManagement = () => {
   const [formPin, setFormPin] = useState('');
   const [formRole, setFormRole] = useState<StaffRole>('cashier');
   const [formPerms, setFormPerms] = useState<StaffPermissions>(defaultPermissions);
+  const [formBranchIds, setFormBranchIds] = useState<string[]>([]);
 
   if (!user) return null;
 
@@ -78,6 +80,7 @@ const StaffManagement = () => {
     setFormPin('');
     setFormRole('cashier');
     setFormPerms({ ...defaultPermissions });
+    setFormBranchIds([]);
     setIsFormOpen(true);
   };
 
@@ -87,6 +90,7 @@ const StaffManagement = () => {
     setFormPin(s.pin);
     setFormRole(s.role);
     setFormPerms({ ...s.permissions });
+    setFormBranchIds(s.branchIds ?? []);
     setIsFormOpen(true);
   };
 
@@ -104,7 +108,7 @@ const StaffManagement = () => {
 
     if (editingStaff) {
       setStaff(prev => prev.map(s => s.id === editingStaff.id ? {
-        ...s, name: formName, pin: formPin, role: formRole, permissions: { ...formPerms },
+        ...s, name: formName, pin: formPin, role: formRole, permissions: { ...formPerms }, branchIds: [...formBranchIds],
       } : s));
       addAuditEntry(user.id, user.name, 'STAFF_EDITED', `Edited staff: ${formName} (${formRole})`);
       toast.success(`Updated ${formName}`);
@@ -115,6 +119,7 @@ const StaffManagement = () => {
         pin: formPin,
         role: formRole,
         permissions: { ...formPerms },
+        branchIds: [...formBranchIds],
       };
       setStaff(prev => [...prev, newStaff]);
       addAuditEntry(user.id, user.name, 'STAFF_ADDED', `Added staff: ${formName} (${formRole})`);
