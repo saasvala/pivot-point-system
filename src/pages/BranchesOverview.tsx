@@ -352,14 +352,14 @@ const SummaryCard = ({
   label, value, icon: Icon, tone,
 }: { label: string; value: string; icon: any; tone: string }) => (
   <Card className="glass-card border-border/50">
-    <CardContent className="p-3 md:p-4">
-      <div className="flex items-center justify-between mb-1.5">
-        <span className="text-[11px] md:text-xs text-muted-foreground uppercase tracking-wider truncate">
+    <CardContent className="p-2.5 md:p-4">
+      <div className="flex items-center justify-between gap-1.5 mb-1">
+        <span className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-wider truncate min-w-0">
           {label}
         </span>
-        <Icon className={cn('w-4 h-4 flex-shrink-0', tone)} />
+        <Icon className={cn('w-3.5 h-3.5 md:w-4 md:h-4 flex-shrink-0', tone)} />
       </div>
-      <div className="text-lg md:text-2xl font-bold">{value}</div>
+      <div className="text-base md:text-2xl font-bold truncate">{value}</div>
     </CardContent>
   </Card>
 );
