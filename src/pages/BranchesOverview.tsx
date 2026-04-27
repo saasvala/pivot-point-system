@@ -271,25 +271,33 @@ const BranchesOverview = () => {
           </CardHeader>
           <CardContent className="p-2 md:p-6 pt-0 md:pt-0">
             <div className="w-full h-[220px] md:h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData} margin={{ top: 8, right: 4, left: -24, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                  <XAxis dataKey="name" tick={{ fontSize: 10 }} interval={0} />
-                  <YAxis yAxisId="l" tick={{ fontSize: 10 }} width={36} />
-                  <YAxis yAxisId="r" orientation="right" tick={{ fontSize: 10 }} width={28} />
-                  <Tooltip
-                    contentStyle={{
-                      background: 'hsl(var(--card))',
-                      border: '1px solid hsl(var(--border))',
-                      borderRadius: '8px',
-                      fontSize: '12px',
-                    }}
-                  />
-                  <Legend wrapperStyle={{ fontSize: '11px' }} />
-                  <Bar yAxisId="l" dataKey="Revenue" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
-                  <Bar yAxisId="r" dataKey="Orders" fill="hsl(var(--secondary))" radius={[6, 6, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+              {chartData.length === 0 ? (
+                <div className="h-full flex items-center justify-center text-center px-4">
+                  <p className="text-sm text-muted-foreground">
+                    No branch data to chart yet.
+                  </p>
+                </div>
+              ) : (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={chartData} margin={{ top: 8, right: 4, left: -24, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+                    <XAxis dataKey="name" tick={{ fontSize: 10 }} interval={0} />
+                    <YAxis yAxisId="l" tick={{ fontSize: 10 }} width={36} />
+                    <YAxis yAxisId="r" orientation="right" tick={{ fontSize: 10 }} width={28} />
+                    <Tooltip
+                      contentStyle={{
+                        background: 'hsl(var(--card))',
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '8px',
+                        fontSize: '12px',
+                      }}
+                    />
+                    <Legend wrapperStyle={{ fontSize: '11px' }} />
+                    <Bar yAxisId="l" dataKey="Revenue" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
+                    <Bar yAxisId="r" dataKey="Orders" fill="hsl(var(--secondary))" radius={[6, 6, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              )}
             </div>
           </CardContent>
         </Card>
