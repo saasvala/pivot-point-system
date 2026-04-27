@@ -16,6 +16,7 @@ import Inventory from "./pages/Inventory";
 import Reports from "./pages/Reports";
 import Customers from "./pages/Customers";
 import Branches from "./pages/Branches";
+import BranchesOverview from "./pages/BranchesOverview";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,6 +40,7 @@ const App = () => (
               <Route path="/reports" element={<ProtectedRoute allowedRoles={['super_admin', 'owner', 'manager']}><Reports /></ProtectedRoute>} />
               <Route path="/customers" element={<ProtectedRoute><Customers /></ProtectedRoute>} />
               <Route path="/branches" element={<ProtectedRoute allowedRoles={['super_admin', 'owner']}><Branches /></ProtectedRoute>} />
+              <Route path="/branches/overview" element={<ProtectedRoute allowedRoles={['super_admin', 'owner']}><BranchesOverview /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AuthProvider>
