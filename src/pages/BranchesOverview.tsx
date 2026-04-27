@@ -39,11 +39,25 @@ function useReactiveSnapshot() {
 
 type ViewMode = 'network' | 'active';
 
+const VIEW_STORAGE_KEY = 'nexuspos-overview-view-v1';
+
 const BranchesOverview = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { branches, activeBranchId, activeBranch } = useBranches();
-  const [view, setView] = useState<ViewMode>('network');
+  const [view, setView] = useState<ViewMode>(() => {
+    try {
+      const saved = localStorage.getItem(VIEW_STORAGE_KEY);
+      return saved === 'active' ? 'active' : 'network';
+    } catch {
+      return 'network';
+    }
+  });
+  // Persist view selection across refreshes
+  const updateView = (next: ViewMode) => {
+    setView(next);
+    try { localStorage.setItem(VIEW_STORAGE_KEY, next); } catch {}
+  };
   useReactiveSnapshot();
 
   const perBranch = useMemo(() => {
