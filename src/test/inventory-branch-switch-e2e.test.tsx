@@ -64,13 +64,17 @@ const renderInventory = (
     </ThemeProvider>
   );
 
-const switchBranchInHeader = async (branchName: string) => {
-  // Open the header switcher
+const switchBranchInHeader = async (currentBranchName: string, targetBranchName: string) => {
+  // The header BranchSwitcher trigger is a <button role="combobox"> whose
+  // visible text is the currently selected branch name. Multiple comboboxes
+  // exist on the page (Category / Stock Select), so disambiguate by name.
+  const triggers = screen.getAllByRole('combobox');
+  const branchTrigger = triggers.find((t) => t.textContent?.includes(currentBranchName));
+  expect(branchTrigger, `BranchSwitcher trigger for "${currentBranchName}" not found`).toBeTruthy();
   act(() => {
-    fireEvent.click(screen.getByRole('combobox'));
+    fireEvent.click(branchTrigger!);
   });
-  // Click the branch in the popover
-  const matches = await screen.findAllByText(branchName);
+  const matches = await screen.findAllByText(targetBranchName);
   const button = matches.map((el) => el.closest('button')).find(Boolean) as HTMLButtonElement;
   expect(button).toBeTruthy();
   act(() => {
