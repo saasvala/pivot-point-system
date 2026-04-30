@@ -132,8 +132,9 @@ describe.each([
 
     expect(branchStore.getActiveBranchId()).toBe(b1.id);
     active = branchStore.getActiveBranchId();
-    // Revenue scope updated instantly
-    expect(salesStore.getTodayStats(active).revenue).toBe(200);
+    // Revenue scope updated instantly to b1's revenue (different from b0's)
+    expect(salesStore.getTodayStats(active).revenue).toBe(rev1);
+    expect(salesStore.getTodayStats(active).revenue).not.toBe(rev0);
     // Stock scope updated instantly
     expect(stockStore.getProductsForBranch(active).find((p) => p.id === productId)!.stock).toBe(22);
     // Trigger reflects new selection
@@ -151,7 +152,7 @@ describe.each([
     });
 
     expect(branchStore.getActiveBranchId()).toBe(b2.id);
-    expect(salesStore.getTodayStats(b2.id).revenue).toBe(300);
+    expect(salesStore.getTodayStats(b2.id).revenue).toBe(rev2);
     expect(stockStore.getProductsForBranch(b2.id).find((p) => p.id === productId)!.stock).toBe(33);
 
     // --- Simulate page refresh: localStorage persists, modules re-init ---
