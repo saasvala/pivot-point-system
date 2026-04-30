@@ -95,7 +95,8 @@ describe.each([
     });
 
     it('stock counts and low-stock alert update instantly when switching branches', async () => {
-      const { branchStore, stockStore, AuthProvider, Inventory } = await importFresh();
+      const { branchStore, stockStore, AuthProvider, ThemeProvider, TooltipProvider, Inventory } =
+        await importFresh();
       loginAsSuperAdmin();
 
       const all = branchStore.getAllBranches();
