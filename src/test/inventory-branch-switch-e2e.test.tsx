@@ -33,8 +33,10 @@ const importFresh = async () => {
   const branchStore = await import('@/data/branchStore');
   const stockStore = await import('@/data/branchStockStore');
   const { AuthProvider } = await import('@/hooks/useAuth');
+  const { ThemeProvider } = await import('@/components/ThemeProvider');
+  const { TooltipProvider } = await import('@/components/ui/tooltip');
   const Inventory = (await import('@/pages/Inventory')).default;
-  return { branchStore, stockStore, AuthProvider, Inventory };
+  return { branchStore, stockStore, AuthProvider, ThemeProvider, TooltipProvider, Inventory };
 };
 
 const loginAsSuperAdmin = () => {
