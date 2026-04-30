@@ -126,7 +126,7 @@ describe.each([
         branchStore.setActiveBranch(bA.id);
       });
 
-      renderInventory(AuthProvider, Inventory);
+      renderInventory(AuthProvider, ThemeProvider, TooltipProvider, Inventory);
 
       // ---- Snapshot stats while on branch A ----
       const findStat = (label: string) => {
