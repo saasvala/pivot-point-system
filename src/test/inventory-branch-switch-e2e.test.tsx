@@ -46,13 +46,22 @@ const loginAsSuperAdmin = () => {
   );
 };
 
-const renderInventory = (AuthProvider: any, Inventory: any) =>
+const renderInventory = (
+  AuthProvider: any,
+  ThemeProvider: any,
+  TooltipProvider: any,
+  Inventory: any
+) =>
   render(
-    <MemoryRouter initialEntries={['/inventory']}>
-      <AuthProvider>
-        <Inventory />
-      </AuthProvider>
-    </MemoryRouter>
+    <ThemeProvider defaultTheme="light" storageKey="nexuspos-theme">
+      <TooltipProvider>
+        <MemoryRouter initialEntries={['/inventory']}>
+          <AuthProvider>
+            <Inventory />
+          </AuthProvider>
+        </MemoryRouter>
+      </TooltipProvider>
+    </ThemeProvider>
   );
 
 const switchBranchInHeader = async (branchName: string) => {
