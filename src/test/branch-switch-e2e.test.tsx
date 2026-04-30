@@ -104,12 +104,19 @@ describe.each([
     stockStore.setStock(b1.id, productId, 22);
     stockStore.setStock(b2.id, productId, 33);
 
+    // Capture baseline revenues per branch (seed data already present)
+    const rev0 = salesStore.getTodayStats(b0.id).revenue;
+    const rev1 = salesStore.getTodayStats(b1.id).revenue;
+    const rev2 = salesStore.getTodayStats(b2.id).revenue;
+    // Each branch must have a *different* revenue scope
+    expect(new Set([rev0, rev1, rev2]).size).toBe(3);
+
     renderSwitcher(AuthProvider, BranchSwitcher);
 
     // --- Active = first branch initially ---
     expect(branchStore.getActiveBranchId()).toBe(b0.id);
     let active = branchStore.getActiveBranchId();
-    expect(salesStore.getTodayStats(active).revenue).toBe(100);
+    expect(salesStore.getTodayStats(active).revenue).toBe(rev0);
     expect(stockStore.getProductsForBranch(active).find((p) => p.id === productId)!.stock).toBe(11);
 
     // --- Switch to second branch via dropdown ---
