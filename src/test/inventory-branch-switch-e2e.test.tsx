@@ -128,16 +128,24 @@ describe.each([
 
       renderInventory(AuthProvider, ThemeProvider, TooltipProvider, Inventory);
 
-      // ---- Snapshot stats while on branch A ----
+      // Read the stat-card value next to a given label. The label lives in a
+      // <p class="text-xs text-muted-foreground"> inside a Card. Filter to
+      // that <p> to avoid matching the same text in Select options.
       const findStat = (label: string) => {
-        const labelEl = screen.getByText(label);
-        const card = labelEl.closest('div')!.parentElement!;
-        // The numeric value lives in the next <p> sibling of the label
-        return within(card).getAllByText(/^[\d,$]+$/)[0]?.textContent || '';
+        const labelEl = screen
+          .getAllByText(label)
+          .find((el) => el.tagName === 'P' && el.className.includes('text-muted-foreground'));
+        expect(labelEl, `stat label "${label}" not found`).toBeTruthy();
+        const valueEl = labelEl!.nextElementSibling as HTMLElement | null;
+        return valueEl?.textContent?.trim() || '';
       };
 
       const lowOnA = findStat('Low Stock');
       const outOnA = findStat('Out of Stock');
+
+      // Sanity: matches what the store says for branch A
+      expect(Number(lowOnA)).toBe(1);
+      expect(Number(outOnA)).toBe(0);
 
       // Header subtitle reflects branch A
       expect(screen.getAllByText(new RegExp(bA.name)).length).toBeGreaterThan(0);
@@ -148,24 +156,22 @@ describe.each([
       // Active branch updated in store
       expect(branchStore.getActiveBranchId()).toBe(bB.id);
 
-      // ---- Stats must instantly reflect branch B (different from A) ----
+      // ---- Stats must instantly reflect branch B ----
       const lowOnB = findStat('Low Stock');
       const outOnB = findStat('Out of Stock');
 
-      // Branch B has 3 low-stock items + 1 out-of-stock; branch A has 1 + 0.
+      expect(Number(lowOnB)).toBe(3);
+      expect(Number(outOnB)).toBe(1);
       expect(lowOnB).not.toBe(lowOnA);
       expect(outOnB).not.toBe(outOnA);
-      expect(Number(outOnB)).toBeGreaterThanOrEqual(1);
-      expect(Number(lowOnB)).toBeGreaterThanOrEqual(3);
 
       // Header subtitle now reflects branch B
       expect(screen.getAllByText(new RegExp(bB.name)).length).toBeGreaterThan(0);
 
       // Low-stock alert banner shows the correct branch-B count
-      const alertText = screen.getByText(
-        new RegExp(`${Number(lowOnB)} products? running low on stock`, 'i')
-      );
-      expect(alertText).toBeInTheDocument();
+      expect(
+        screen.getByText(new RegExp(`${Number(lowOnB)} products? running low on stock`, 'i'))
+      ).toBeInTheDocument();
 
       // ---- Switch back to branch A: counts revert ----
       await switchBranchInHeader(bA.name);
