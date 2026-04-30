@@ -46,10 +46,11 @@ describe('SECURITY: cashier cannot operate on other branches via URL or payload'
     const { branchStore, AuthProvider, ProtectedRoute } = await importFresh();
     loginAsCashier();
 
-    // Probe component reads the active branch the page would scope to
+    // Probe reads via the reactive hook the real pages use, so it reflects
+    // the branch-lock applied by AuthProvider's mount effect.
     const PosProbe = () => {
-      const id = branchStore.getActiveBranchId();
-      return <div data-testid="active-branch">{id}</div>;
+      const { activeBranchId } = branchStore.useBranches();
+      return <div data-testid="active-branch">{activeBranchId}</div>;
     };
 
     render(
