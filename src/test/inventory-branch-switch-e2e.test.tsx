@@ -155,7 +155,7 @@ describe.each([
       expect(screen.getAllByText(new RegExp(bA.name)).length).toBeGreaterThan(0);
 
       // ---- Switch to branch B via header dropdown ----
-      await switchBranchInHeader(bB.name);
+      await switchBranchInHeader(bA.name, bB.name);
 
       // Active branch updated in store
       expect(branchStore.getActiveBranchId()).toBe(bB.id);
@@ -178,7 +178,7 @@ describe.each([
       ).toBeInTheDocument();
 
       // ---- Switch back to branch A: counts revert ----
-      await switchBranchInHeader(bA.name);
+      await switchBranchInHeader(bB.name, bA.name);
       expect(branchStore.getActiveBranchId()).toBe(bA.id);
       expect(findStat('Low Stock')).toBe(lowOnA);
       expect(findStat('Out of Stock')).toBe(outOnA);
