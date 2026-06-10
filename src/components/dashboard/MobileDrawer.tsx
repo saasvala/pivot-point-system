@@ -14,7 +14,7 @@ const allMenuItems = [
   { id: 'customers', label: 'Customers', icon: Users, path: '/customers' },
   { id: 'reports', label: 'Reports', icon: BarChart3, path: '/reports' },
   { id: 'branches', label: 'Branches', icon: Store, path: '/branches' },
-  { id: 'branches', label: 'Multi-Branch View', icon: BarChart3, path: '/branches/overview' },
+  { id: 'branches', label: 'Multi-Branch View', icon: BarChart3, path: '/branches/overview', key: 'branches-overview' },
   { id: 'settings', label: 'Settings', icon: Settings, path: '/settings' },
   { id: 'staff', label: 'Staff', icon: UserCircle, path: '/staff' },
 ];
