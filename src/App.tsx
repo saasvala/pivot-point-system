@@ -43,6 +43,7 @@ const App = () => (
               <Route path="/branches" element={<ProtectedRoute allowedRoles={['super_admin', 'owner']}><Branches /></ProtectedRoute>} />
               <Route path="/branches/overview" element={<ProtectedRoute allowedRoles={['super_admin', 'owner']}><BranchesOverview /></ProtectedRoute>} />
               <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+              <Route path="/profile" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AuthProvider>
