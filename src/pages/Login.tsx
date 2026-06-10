@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth, UserRole } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 import posHero3D from '@/assets/pos-hero-3d.png';
 
 const roleButtons: { role: UserRole; label: string; icon: typeof ShieldCheck; desc: string }[] = [
@@ -145,11 +146,28 @@ const Login = () => {
                   <Checkbox id="remember" />
                   <Label htmlFor="remember" className="text-sm text-muted-foreground cursor-pointer">Remember me</Label>
                 </div>
-                <a href="#" className="text-sm text-primary hover:underline">Forgot password?</a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const e = window.prompt('Enter the email to receive a reset link:');
+                    if (e && /\S+@\S+\.\S+/.test(e)) toast.success(`Reset link sent to ${e}`);
+                    else if (e) toast.error('Invalid email address');
+                  }}
+                  className="text-sm text-primary hover:underline"
+                >
+                  Forgot password?
+                </button>
               </div>
             )}
 
-            <Button type="submit" className="w-full h-11 rounded-xl btn-gradient text-sm font-semibold gap-2">
+            <Button
+              type="submit"
+              className="w-full h-11 rounded-xl btn-gradient text-sm font-semibold gap-2"
+              onClick={() => {
+                if (isLogin) toast.info('Use the Quick Demo Login below to enter');
+                else toast.info('Demo mode — use Quick Demo Login below to explore roles');
+              }}
+            >
               {isLogin ? 'Sign In' : 'Create Account'}
               <ArrowRight className="w-4 h-4" />
             </Button>
