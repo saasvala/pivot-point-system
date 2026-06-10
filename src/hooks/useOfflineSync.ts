@@ -182,6 +182,7 @@ export const useOfflineSync = () => {
       await refreshPendingCount();
     } catch (err) {
       console.error('Sync failed:', err);
+      toast.error('Sync failed — will retry automatically');
     } finally {
       setIsSyncing(false);
     }
