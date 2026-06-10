@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth, UserRole } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 import posHero3D from '@/assets/pos-hero-3d.png';
 
 const roleButtons: { role: UserRole; label: string; icon: typeof ShieldCheck; desc: string }[] = [
